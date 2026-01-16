@@ -1,0 +1,7 @@
+﻿services:
+  sportmanagementsystem:
+    image: sportmanagementsystem
+    build:
+      context: .
+      dockerfile: SportManagementSystem/Dockerfile
+

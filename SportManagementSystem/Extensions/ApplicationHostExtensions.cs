@@ -1,3 +1,6 @@
+using SportManagementSystem.Modules.Users.Domain.Services;
+using SportManagementSystem.Modules.Users.Infrastructure.Services;
+
 namespace SportManagementSystem.Extensions;
 
 /// <summary>
@@ -14,6 +17,6 @@ public static class ApplicationHostExtensions
     /// <param name="services">Коллекция сервисов.</param>
     public static void AddApplication(this IServiceCollection services)
     {
-
+        services.AddScoped<IJwtTokenService, JwtTokenService>();
     }
 }

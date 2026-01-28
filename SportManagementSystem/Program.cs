@@ -1,12 +1,11 @@
 using Microsoft.EntityFrameworkCore;
-using SportManagementSystem;
 using SportManagementSystem.Data;
 using SportManagementSystem.Extensions;
 using SportManagementSystem.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
-
 var configuration = builder.Configuration;
+
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -15,6 +14,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         )
     );
 
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly));
+builder.Services.AddFluentValidation();
+builder.Services.AddJwtAuth(configuration);
+builder.Services.AddAuthModule();
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();

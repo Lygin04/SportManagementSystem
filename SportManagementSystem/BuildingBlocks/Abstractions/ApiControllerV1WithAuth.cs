@@ -1,0 +1,28 @@
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+
+namespace SportManagementSystem.BuildingBlocks.Abstractions;
+
+[ApiController]
+[Route("v1/[controller]")]
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+public class ApiControllerV1WithAuth : BaseAuthController
+{
+    protected IActionResult ToActionResult<T>(MbResult<T> result)
+    {
+        if (result.IsSuccess)
+        {
+            return typeof(T) == typeof(Unit)
+                ? StatusCode(StatusCodes.Status204NoContent)
+                : Ok(result.Data);
+        }
+
+        return StatusCode(result.Error!.Status, new
+        {
+            result.Error.Title,
+            result.Error.Status,
+            result.Error.Detail,
+            result.Error.Errors
+        });
+    }
+}

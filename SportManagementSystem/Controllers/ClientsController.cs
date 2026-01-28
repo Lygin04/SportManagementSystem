@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using SportManagementSystem.Entities;
-using SportManagementSystem.Entities.Enums;
-using SportManagementSystem.Models.Requests;
-using SportManagementSystem.Repositories.Interfaces;
+using SportManagementSystem.Modules.Users.Contracts.Requests;
+using SportManagementSystem.Modules.Users.Domain.Entities;
+using SportManagementSystem.Modules.Users.Domain.Repositories;
 
 namespace SportManagementSystem.Controllers;
 
@@ -19,7 +18,6 @@ public class ClientsController(IClientRepository clientRepository) : ControllerB
             LastName = request.LastName,
             Patronymic = request.Patronymic,
             BirthDate = request.BirthDate,
-            Email = request.Email,
             Phone = request.Phone,
             RegisterDate = DateTime.UtcNow,
         };
@@ -44,7 +42,6 @@ public class ClientsController(IClientRepository clientRepository) : ControllerB
             LastName = request.LastName,
             Patronymic = request.Patronymic,
             BirthDate = request.BirthDate,
-            Email = request.Email,
             Phone = request.Phone,
             Modified = DateTime.UtcNow,
         };

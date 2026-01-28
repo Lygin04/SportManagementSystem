@@ -1,11 +1,11 @@
 using SportManagementSystem.Entities.Enums;
 
-namespace SportManagementSystem.Entities;
+namespace SportManagementSystem.Modules.Users.Domain.Entities;
 
 public class DbUserAccount
 {
     public long Id { get; set; }
-    public string UserName { get; set; }
+    public string Email { get; set; }
     public string PasswordHash { get; set; }
     public EUserRole Role { get; set; }
     public EAccountStatus Status { get; set; }

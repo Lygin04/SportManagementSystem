@@ -1,6 +1,4 @@
-using SportManagementSystem.Entities.Enums;
-
-namespace SportManagementSystem.Models.Requests;
+namespace SportManagementSystem.Modules.Users.Contracts.Requests;
 
 public class CreateClientRequest
 {

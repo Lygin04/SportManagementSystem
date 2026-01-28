@@ -1,6 +1,6 @@
-using SportManagementSystem.Entities.Enums;
+using SportManagementSystem.Entities;
 
-namespace SportManagementSystem.Entities;
+namespace SportManagementSystem.Modules.Users.Domain.Entities;
 
 public class DbClient
 {
@@ -9,7 +9,6 @@ public class DbClient
     public string LastName { get; set; }
     public string? Patronymic { get; set; }
     public DateOnly? BirthDate { get; set; }
-    public string? Email { get; set; }
     public string? Phone { get; set; }
     public DateTime RegisterDate { get; set; }
     public DateTime? Modified { get; set; }

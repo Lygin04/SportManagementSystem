@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using SportManagementSystem.Data;
-using SportManagementSystem.Entities;
-using SportManagementSystem.Repositories.Interfaces;
+using SportManagementSystem.Modules.Users.Domain.Entities;
+using SportManagementSystem.Modules.Users.Domain.Repositories;
 
-namespace SportManagementSystem.Repositories;
+namespace SportManagementSystem.Modules.Users.Infrastructure.Repositories;
 
 public class ClientRepository(ApplicationDbContext db) : IClientRepository
 {

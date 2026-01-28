@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SportManagementSystem.Entities;
 using SportManagementSystem.Entities.Enums;
+using SportManagementSystem.Modules.Users.Domain.Entities;
 
 namespace SportManagementSystem.Data;
 
@@ -37,7 +38,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .IsUnique();
         
         modelBuilder.Entity<DbUserAccount>()
-            .HasIndex(x => x.UserName)
+            .HasIndex(x => x.Email)
             .IsUnique();
     }
     

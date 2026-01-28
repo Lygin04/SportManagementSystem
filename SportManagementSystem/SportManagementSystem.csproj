@@ -8,6 +8,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+        <PackageReference Include="FluentAssertions" Version="8.8.0" />
+        <PackageReference Include="FluentValidation" Version="12.1.1" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+        <PackageReference Include="MediatR" Version="14.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.12" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.12" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.12">
@@ -26,6 +32,7 @@
 
     <ItemGroup>
       <Folder Include="Migrations\" />
+      <Folder Include="Modules\Users\Domain\Events\" />
     </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-namespace SportManagementSystem.Entities;
+namespace SportManagementSystem.Modules.Users.Domain.Entities;
 
 public class DbStaff
 {

@@ -1,3 +1,5 @@
+using SportManagementSystem.Modules.Users.Domain.Entities;
+
 namespace SportManagementSystem.Entities;
 
 public class DbServiceSchedule

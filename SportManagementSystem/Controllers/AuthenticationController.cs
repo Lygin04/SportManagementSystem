@@ -12,9 +12,9 @@ namespace SportManagementSystem.Controllers;
 public class AuthenticationController(IMediator mediator) : ApiControllerV1
 {
     [HttpPost("register")]
-    public async Task<IActionResult> RegisterClient(RegisterClientRequest request)
+    public async Task<IActionResult> RegisterClient(RegisterClientRequest request, CancellationToken ct)
     {
-        var result = await mediator.Send(new RegisterClientMessage(request));
+        var result = await mediator.Send(new RegisterClientMessage(request), ct);
         
         return result.IsSuccess
             ? Created("", new { result.IsSuccess, result.Data, result.Error })
@@ -23,9 +23,9 @@ public class AuthenticationController(IMediator mediator) : ApiControllerV1
 
     [HttpPost("register-staff")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> RegisterStaff(RegisterStaffRequest request)
+    public async Task<IActionResult> RegisterStaff(RegisterStaffRequest request, CancellationToken ct)
     {
-        var result = await mediator.Send(new RegisterStaffMessage(request));
+        var result = await mediator.Send(new RegisterStaffMessage(request), ct);
         
         return result.IsSuccess
             ? Created("", new { result.IsSuccess, result.Data, result.Error })
@@ -33,9 +33,9 @@ public class AuthenticationController(IMediator mediator) : ApiControllerV1
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login(LoginUserRequest request)
+    public async Task<IActionResult> Login(LoginUserRequest request, CancellationToken ct)
     {
-        var result = await mediator.Send(new LoginUserMessage(request));
+        var result = await mediator.Send(new LoginUserMessage(request), ct);
         return ToActionResult(result);
     }
 }

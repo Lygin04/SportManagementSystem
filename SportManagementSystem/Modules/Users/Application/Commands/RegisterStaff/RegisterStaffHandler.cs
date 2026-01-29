@@ -10,7 +10,7 @@ namespace SportManagementSystem.Modules.Users.Application.Commands.RegisterStaff
 
 public class RegisterStaffHandler(
     IUserAccountRepository userAccountRepository,
-    IClientRepository clientRepository,
+    IStaffRepository staffRepository,
     IPasswordHasher passwordHasher) : IMessageHandler<RegisterStaffMessage, MbResult<Unit>>
 {
     public async Task<MbResult<Unit>> Handle(RegisterStaffMessage request, CancellationToken cancellationToken)
@@ -23,17 +23,16 @@ public class RegisterStaffHandler(
                 detail: "Аккаунт с такой почтой уже существует."));
         }
         
-        var client = new DbClient
+        var staff = new DbStaff
         {
             FirstName = request.Request.FirstName,
             LastName = request.Request.LastName,
             Patronymic = request.Request.Patronymic,
             BirthDate = request.Request.BirthDate,
             Phone = request.Request.Phone,
-            RegisterDate = DateTime.UtcNow,
         };
         
-        client = await clientRepository.CreateAsync(client, cancellationToken);
+        staff = await staffRepository.CreateAsync(staff, cancellationToken);
         
         var userAccount = new DbUserAccount
         {
@@ -41,7 +40,7 @@ public class RegisterStaffHandler(
             PasswordHash = passwordHasher.Hash(request.Request.Password),
             Role = request.Request.Role,
             Status = EAccountStatus.Active,
-            ClientId = client.Id,
+            ClientId = staff.Id,
             Created = DateTime.UtcNow,
         };
 

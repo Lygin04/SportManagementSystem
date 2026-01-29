@@ -23,7 +23,7 @@ public class BaseAuthController : ControllerBase
     /// <summary>
     /// Получает идентификатор пользователя из JWT.
     /// </summary>
-    protected int UserId => int.Parse(JwtReader.GetId(AuthHeader));
+    protected long UserId => long.Parse(JwtReader.GetId(AuthHeader));
     
     /// <summary>
     /// Получает роль пользователя из JWT.

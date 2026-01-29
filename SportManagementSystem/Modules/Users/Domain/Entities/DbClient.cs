@@ -8,8 +8,8 @@ public class DbClient
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string? Patronymic { get; set; }
-    public DateOnly? BirthDate { get; set; }
-    public string? Phone { get; set; }
+    public DateOnly BirthDate { get; set; }
+    public string Phone { get; set; }
     public DateTime RegisterDate { get; set; }
     public DateTime? Modified { get; set; }
     

@@ -35,7 +35,7 @@ public class LoginUserHandler(
         }
         
         candidate.LastLogin = DateTime.UtcNow;
-        await userAccountRepository.UpdateAsync(candidate, cancellationToken);
+        await userAccountRepository.UpdateLastLoginDateAsync(candidate.Id, cancellationToken);
 
         var response = await jwtService.CreateAccessTokenAsync(new List<Claim>
         {

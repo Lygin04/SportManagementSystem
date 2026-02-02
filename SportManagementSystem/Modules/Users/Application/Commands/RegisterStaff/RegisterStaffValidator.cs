@@ -1,4 +1,3 @@
-using System.Globalization;
 using FluentValidation;
 
 namespace SportManagementSystem.Modules.Users.Application.Commands.RegisterStaff;

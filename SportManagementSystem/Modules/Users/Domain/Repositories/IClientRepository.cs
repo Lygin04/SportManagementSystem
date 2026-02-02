@@ -5,5 +5,4 @@ namespace SportManagementSystem.Modules.Users.Domain.Repositories;
 
 public interface IClientRepository : IBaseRepository<DbClient>
 {
-    
 }

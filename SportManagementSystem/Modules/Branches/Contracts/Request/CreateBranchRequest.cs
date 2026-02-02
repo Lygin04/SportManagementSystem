@@ -1,15 +1,7 @@
-namespace SportManagementSystem.Entities;
+namespace SportManagementSystem.Modules.Branches.Contracts.Request;
 
-/// <summary>
-/// Филиал спортивной организации.
-/// </summary>
-public class DbBranch
+public class CreateBranchRequest
 {
-    /// <summary>
-    /// Уникальный индетификатор филиала.
-    /// </summary>
-    public long Id { get; set; }
-    
     /// <summary>
     /// Название Филиала.
     /// </summary>
@@ -29,9 +21,4 @@ public class DbBranch
     /// Географическая долгота.
     /// </summary>
     public double? Longitude { get; set; }
-    
-    /// <summary>
-    /// Помещения, принадлежащие филиалу.
-    /// </summary>
-    public ICollection<DbRoom> Rooms { get; set; } = new List<DbRoom>();
 }

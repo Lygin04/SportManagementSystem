@@ -1,6 +1,6 @@
 using SportManagementSystem.Entities.Enums;
 
-namespace SportManagementSystem.Entities;
+namespace SportManagementSystem.Modules.Branches.Domain.Entities;
 
 /// <summary>
 /// Помещение (зал, баня, массажный кабинет).

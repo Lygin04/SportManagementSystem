@@ -14,24 +14,6 @@ public class UserAccountRepository(ApplicationDbContext db) : IUserAccountReposi
         return userAccount.Entity;
     }
 
-    public async Task UpdateAsync(DbUserAccount entity, CancellationToken ct)
-    {
-        var existingEntity = db.UserAccounts.Local.FirstOrDefault(e => e.Id == entity.Id)
-                             ?? await db.UserAccounts.FindAsync(entity.Id, ct);
-
-        if (existingEntity != null)
-        {
-            db.Entry(existingEntity).CurrentValues.SetValues(entity);
-            existingEntity.Modified = DateTime.UtcNow;
-        }
-        else
-        {
-            db.Entry(entity).State = EntityState.Modified;
-        }
-        
-        await db.SaveChangesAsync(ct);
-    }
-
     public async Task DeleteAsync(long id, CancellationToken ct)
     {
         var userAccount = new  DbUserAccount { Id = id };
@@ -53,5 +35,12 @@ public class UserAccountRepository(ApplicationDbContext db) : IUserAccountReposi
     public async Task<bool> ExistsEmailAsync(string email, CancellationToken ct)
     {
         return await db.UserAccounts.AnyAsync(e => e.Email == email, ct);
+    }
+
+    public async Task UpdateLastLoginDateAsync(long id, CancellationToken ct)
+    {
+        var userAccount = await db.UserAccounts.FindAsync(id, ct);
+        userAccount!.LastLogin = DateTime.UtcNow;
+        await db.SaveChangesAsync(ct);
     }
 }

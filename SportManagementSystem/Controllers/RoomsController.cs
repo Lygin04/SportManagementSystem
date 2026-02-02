@@ -1,0 +1,37 @@
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using SportManagementSystem.BuildingBlocks.Abstractions;
+using SportManagementSystem.Modules.Branches.Application.Commands.CreateRoom;
+using SportManagementSystem.Modules.Branches.Application.Queries.GetRoom;
+using SportManagementSystem.Modules.Branches.Application.Queries.GetRoomByBranch;
+using SportManagementSystem.Modules.Branches.Contracts.Request;
+
+namespace SportManagementSystem.Controllers;
+
+public class RoomsController(IMediator mediator) : ApiControllerV1WithAuth
+{
+    [Authorize(Roles = "Admin")]
+    [HttpPost]
+    public async Task<IActionResult> Create(CreateRoomRequest request, CancellationToken ct)
+    {
+        var result = await mediator.Send(new CreateRoomMessage(request), ct);
+        return result.IsSuccess
+            ? Created(nameof(GetById), new { Id = result.Data})
+            : ToActionResult(result);    
+    }
+
+    [HttpGet("{id:long}")]
+    public async Task<IActionResult> GetById(long id, CancellationToken ct)
+    {
+        var result = await mediator.Send(new GetRoomMessage(id), ct);
+        return ToActionResult(result);
+    }
+
+    [HttpGet("branch/{branchId:long}")]
+    public async Task<IActionResult> GetByBranchId(long branchId, CancellationToken ct)
+    {
+        var result = await mediator.Send(new GetRoomByBranchMessage(branchId), ct);
+        return ToActionResult(result);
+    }
+}

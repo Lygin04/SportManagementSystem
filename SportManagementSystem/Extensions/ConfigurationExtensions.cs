@@ -20,9 +20,9 @@ public static class ConfigurationExtensions
         {
             options.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title = "PlanTime API",
-                Description = "Приложение для составления расписания отпусков",
-                Version = "1.3.3.7"
+                Title = "Sport Management System API",
+                Description = "Приложение для спортивной организации",
+                Version = "1.1.1.1"
             });
 
             var schema = new OpenApiSecurityScheme

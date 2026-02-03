@@ -2,9 +2,9 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportManagementSystem.BuildingBlocks.Abstractions;
-using SportManagementSystem.Modules.Branches.Application.Commands.CreateEquipment;
-using SportManagementSystem.Modules.Branches.Application.Queries.GetEquipment;
-using SportManagementSystem.Modules.Branches.Contracts.Request;
+using SportManagementSystem.Modules.Assets.Application.Commands.CreateEquipment;
+using SportManagementSystem.Modules.Assets.Application.Queries.GetEquipment;
+using SportManagementSystem.Modules.Assets.Contracts.Request;
 
 namespace SportManagementSystem.Controllers;
 

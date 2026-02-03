@@ -1,8 +1,10 @@
 using FluentValidation;
 using MediatR;
 using SportManagementSystem.BuildingBlocks.Behaviors;
-using SportManagementSystem.Modules.Branches.Domain.Repositories;
-using SportManagementSystem.Modules.Branches.Infrastructure.Repositories;
+using SportManagementSystem.Modules.Assets.Domain.Repositories;
+using SportManagementSystem.Modules.Assets.Infrastructure.Repositories;
+using SportManagementSystem.Modules.Services.Domain.Repositories;
+using SportManagementSystem.Modules.Services.Infrastructure.Repositories;
 using SportManagementSystem.Modules.Users.Domain.Repositories;
 using SportManagementSystem.Modules.Users.Infrastructure.Repositories;
 
@@ -37,12 +39,18 @@ public static class InfrastructureHostExtensions
     /// <param name="services">Коллекция сервисов.</param>
     public static void AddInfrastructure(this IServiceCollection services)
     {
+        // Users Module
         services.AddScoped<IClientRepository, ClientRepository>();
         services.AddScoped<IUserAccountRepository, UserAccountRepository>();
         services.AddScoped<IStaffRepository, StaffRepository>();
 
+        // Assets Module
         services.AddScoped<IBranchRepository, BranchRepository>();
         services.AddScoped<IEquipmentRepository, EquipmentRepository>();
         services.AddScoped<IRoomRepository, RoomRepository>();
+        
+        // Service Module
+        services.AddScoped<ISportServiceRepository, SportServiceRepository>();
+        services.AddScoped<IServicePriceRepository, ServicePriceRepository>();
     }
 }

@@ -2,10 +2,10 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportManagementSystem.BuildingBlocks.Abstractions;
-using SportManagementSystem.Modules.Branches.Application.Commands.CreateRoom;
-using SportManagementSystem.Modules.Branches.Application.Queries.GetRoom;
-using SportManagementSystem.Modules.Branches.Application.Queries.GetRoomByBranch;
-using SportManagementSystem.Modules.Branches.Contracts.Request;
+using SportManagementSystem.Modules.Assets.Application.Commands.CreateRoom;
+using SportManagementSystem.Modules.Assets.Application.Queries.GetRoom;
+using SportManagementSystem.Modules.Assets.Application.Queries.GetRoomByBranch;
+using SportManagementSystem.Modules.Assets.Contracts.Request;
 
 namespace SportManagementSystem.Controllers;
 

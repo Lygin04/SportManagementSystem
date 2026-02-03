@@ -2,10 +2,10 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportManagementSystem.BuildingBlocks.Abstractions;
-using SportManagementSystem.Modules.Branches.Application.Commands.CreateBranch;
-using SportManagementSystem.Modules.Branches.Application.Queries.GetBranch;
-using SportManagementSystem.Modules.Branches.Application.Queries.GetBranches;
-using SportManagementSystem.Modules.Branches.Contracts.Request;
+using SportManagementSystem.Modules.Assets.Application.Commands.CreateBranch;
+using SportManagementSystem.Modules.Assets.Application.Queries.GetBranch;
+using SportManagementSystem.Modules.Assets.Application.Queries.GetBranches;
+using SportManagementSystem.Modules.Assets.Contracts.Request;
 
 namespace SportManagementSystem.Controllers;
 

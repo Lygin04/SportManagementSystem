@@ -1,4 +1,4 @@
-using SportManagementSystem.Modules.Branches.Domain.Entities;
+using SportManagementSystem.Modules.Assets.Domain.Entities;
 
 namespace SportManagementSystem.Modules.Users.Domain.Entities;
 

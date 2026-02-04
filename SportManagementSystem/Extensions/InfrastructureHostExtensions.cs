@@ -5,6 +5,8 @@ using SportManagementSystem.Modules.Assets.Domain.Repositories;
 using SportManagementSystem.Modules.Assets.Infrastructure.Repositories;
 using SportManagementSystem.Modules.Clients.Domain.Repositories;
 using SportManagementSystem.Modules.Clients.Infrastructure.Repositories;
+using SportManagementSystem.Modules.Scheduling.Domain.Repositories;
+using SportManagementSystem.Modules.Scheduling.Infrastructure.Repositories;
 using SportManagementSystem.Modules.Services.Domain.Repositories;
 using SportManagementSystem.Modules.Services.Infrastructure.Repositories;
 using SportManagementSystem.Modules.Users.Domain.Repositories;
@@ -58,5 +60,9 @@ public static class InfrastructureHostExtensions
         // Clients Module
         services.AddScoped<IBookingRepository, BookingRepository>();
         services.AddScoped<IMembershipRepository, MembershipRepository>();
+
+        // Scheduling Module
+        services.AddScoped<IServiceScheduleRepository, ServiceScheduleRepository>();
+        services.AddScoped<ITrainingSessionRepository, TrainingSessionRepository>();
     }
 }

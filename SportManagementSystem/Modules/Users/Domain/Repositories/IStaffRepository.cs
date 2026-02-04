@@ -3,7 +3,7 @@ using SportManagementSystem.Repositories.Abstract;
 
 namespace SportManagementSystem.Modules.Users.Domain.Repositories;
 
-public interface IStaffRepository : IBaseRepository<DbStaff>
+public interface IStaffRepository : IBaseRepository<DbStaff>, IExistsByIdRepository<DbStaff>
 {
     
 }

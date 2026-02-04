@@ -1,4 +1,5 @@
-﻿using SportManagementSystem.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SportManagementSystem.Data;
 using SportManagementSystem.Modules.Users.Domain.Entities;
 using SportManagementSystem.Modules.Users.Domain.Repositories;
 
@@ -24,5 +25,10 @@ public class StaffRepository(ApplicationDbContext db) : IStaffRepository
     public async Task<DbStaff?> GetByIdAsync(long id, CancellationToken ct)
     {
         return await db.Staffs.FindAsync(id, ct);
+    }
+
+    public async Task<bool> ExistsAsync(long id, CancellationToken ct)
+    {
+        return await db.Staffs.AnyAsync(staff => staff.Id == id, ct);
     }
 }

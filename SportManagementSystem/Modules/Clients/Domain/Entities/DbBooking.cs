@@ -1,5 +1,6 @@
 using SportManagementSystem.Entities;
 using SportManagementSystem.Entities.Enums;
+using SportManagementSystem.Modules.Scheduling.Domain.Entities;
 using SportManagementSystem.Modules.Users.Domain.Entities;
 
 namespace SportManagementSystem.Modules.Clients.Domain.Entities;

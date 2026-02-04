@@ -2,7 +2,7 @@ using SportManagementSystem.Entities.Enums;
 using SportManagementSystem.Modules.Services.Domain.Entities;
 using SportManagementSystem.Modules.Users.Domain.Entities;
 
-namespace SportManagementSystem.Entities;
+namespace SportManagementSystem.Modules.Scheduling.Domain.Entities;
 
 /// <summary>
 /// Конкретное занятие (фактическое событие).
@@ -26,8 +26,8 @@ public class DbTrainingSession
     /// </summary>
     public DateTime EndedDate { get; set; }
     
-    public long? TrainerId { get; set; }
-    public DbStaff? Trainer { get; set; }
+    public long TrainerId { get; set; }
+    public DbStaff Trainer { get; set; }
 
     /// <summary>
     /// Статус занятия.

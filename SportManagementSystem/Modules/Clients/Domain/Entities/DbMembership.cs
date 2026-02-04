@@ -2,7 +2,7 @@ using SportManagementSystem.Entities.Enums;
 using SportManagementSystem.Modules.Services.Domain.Entities;
 using SportManagementSystem.Modules.Users.Domain.Entities;
 
-namespace SportManagementSystem.Entities;
+namespace SportManagementSystem.Modules.Clients.Domain.Entities;
 
 /// <summary>
 /// Абонемент клиента на услугу.
@@ -34,7 +34,7 @@ public class DbMembership
     /// <summary>
     /// Оставшееся количество посещений.
     /// </summary>
-    public int RemainingVisits { get; set; }
+    public int? RemainingVisits { get; set; }
     
     /// <summary>
     /// Статус абонемента.

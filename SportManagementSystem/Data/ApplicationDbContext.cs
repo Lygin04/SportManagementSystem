@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using SportManagementSystem.Entities;
 using SportManagementSystem.Entities.Enums;
 using SportManagementSystem.Modules.Assets.Domain.Entities;
+using SportManagementSystem.Modules.Clients.Domain.Entities;
 using SportManagementSystem.Modules.Services.Domain.Entities;
 using SportManagementSystem.Modules.Users.Domain.Entities;
 

@@ -18,7 +18,7 @@ public class BranchesController(IMediator mediator) : ApiControllerV1WithAuth
         var result = await mediator.Send(new CreateBranchMessage(request), cancellationToken);
         return result.IsSuccess
             ? Created(nameof(GetById), new { Id = result.Data})
-            : ToActionResult(result);    
+            : ToActionResult(result);
     }
 
     [HttpGet("{id:long}")]

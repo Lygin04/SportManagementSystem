@@ -3,6 +3,8 @@ using MediatR;
 using SportManagementSystem.BuildingBlocks.Behaviors;
 using SportManagementSystem.Modules.Assets.Domain.Repositories;
 using SportManagementSystem.Modules.Assets.Infrastructure.Repositories;
+using SportManagementSystem.Modules.Clients.Domain.Repositories;
+using SportManagementSystem.Modules.Clients.Infrastructure.Repositories;
 using SportManagementSystem.Modules.Services.Domain.Repositories;
 using SportManagementSystem.Modules.Services.Infrastructure.Repositories;
 using SportManagementSystem.Modules.Users.Domain.Repositories;
@@ -52,5 +54,9 @@ public static class InfrastructureHostExtensions
         // Service Module
         services.AddScoped<ISportServiceRepository, SportServiceRepository>();
         services.AddScoped<IServicePriceRepository, ServicePriceRepository>();
+
+        // Clients Module
+        services.AddScoped<IBookingRepository, BookingRepository>();
+        services.AddScoped<IMembershipRepository, MembershipRepository>();
     }
 }

@@ -11,6 +11,9 @@ namespace SportManagementSystem.Controllers;
 
 public class AuthenticationController(IMediator mediator) : ApiControllerV1
 {
+    /// <summary>
+    /// Регистрация для клиента.
+    /// </summary>
     [HttpPost("register")]
     public async Task<IActionResult> RegisterClient(RegisterClientRequest request, CancellationToken ct)
     {
@@ -20,7 +23,10 @@ public class AuthenticationController(IMediator mediator) : ApiControllerV1
             ? Created("", new { result.IsSuccess, result.Data, result.Error })
             : ToActionResult(result);
     }
-
+    
+    /// <summary>
+    /// Регистрация для сотрудников.
+    /// </summary>
     [HttpPost("register-staff")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> RegisterStaff(RegisterStaffRequest request, CancellationToken ct)
@@ -32,6 +38,9 @@ public class AuthenticationController(IMediator mediator) : ApiControllerV1
             : ToActionResult(result);
     }
 
+    /// <summary>
+    /// Авторизация всех пользователей.
+    /// </summary>
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginUserRequest request, CancellationToken ct)
     {

@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using SportManagementSystem.Data;
 using SportManagementSystem.Modules.Users.Domain.Entities;
 using SportManagementSystem.Modules.Users.Domain.Repositories;
@@ -24,5 +25,10 @@ public class ClientRepository(ApplicationDbContext db) : IClientRepository
     public async Task<DbClient?> GetByIdAsync(long id, CancellationToken ct)
     {
         return await db.Clients.FindAsync(id, ct);
+    }
+
+    public async Task<bool> ExistsAsync(long id, CancellationToken ct)
+    {
+        return await db.Clients.AnyAsync(c => c.Id == id, ct);
     }
 }

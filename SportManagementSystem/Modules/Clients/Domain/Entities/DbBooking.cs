@@ -1,7 +1,8 @@
+using SportManagementSystem.Entities;
 using SportManagementSystem.Entities.Enums;
 using SportManagementSystem.Modules.Users.Domain.Entities;
 
-namespace SportManagementSystem.Entities;
+namespace SportManagementSystem.Modules.Clients.Domain.Entities;
 
 /// <summary>
 /// Запись клиента на занятие.

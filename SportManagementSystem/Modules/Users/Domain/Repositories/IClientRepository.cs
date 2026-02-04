@@ -3,6 +3,6 @@ using SportManagementSystem.Repositories.Abstract;
 
 namespace SportManagementSystem.Modules.Users.Domain.Repositories;
 
-public interface IClientRepository : IBaseRepository<DbClient>
+public interface IClientRepository : IBaseRepository<DbClient>, IExistsByIdRepository<long>
 {
 }

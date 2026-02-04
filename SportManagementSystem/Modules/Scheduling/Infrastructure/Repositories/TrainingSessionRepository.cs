@@ -1,4 +1,5 @@
-﻿using SportManagementSystem.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SportManagementSystem.Data;
 using SportManagementSystem.Modules.Scheduling.Domain.Entities;
 using SportManagementSystem.Modules.Scheduling.Domain.Repositories;
 
@@ -24,5 +25,10 @@ public class TrainingSessionRepository(ApplicationDbContext db) : ITrainingSessi
     public async Task<DbTrainingSession?> GetByIdAsync(long id, CancellationToken ct)
     {
         return await db.TrainingSessions.FindAsync(id, ct);
+    }
+
+    public async Task<bool> ExistsAsync(long id, CancellationToken ct)
+    {
+        return await db.TrainingSessions.AnyAsync(x => x.Id == id, ct);
     }
 }

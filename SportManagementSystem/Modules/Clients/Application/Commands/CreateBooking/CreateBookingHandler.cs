@@ -3,18 +3,19 @@ using SportManagementSystem.BuildingBlocks.Abstractions;
 using SportManagementSystem.Entities.Enums;
 using SportManagementSystem.Modules.Clients.Domain.Entities;
 using SportManagementSystem.Modules.Clients.Domain.Repositories;
+using SportManagementSystem.Modules.Scheduling.Domain.Repositories;
 using SportManagementSystem.Modules.Users.Domain.Repositories;
 
 namespace SportManagementSystem.Modules.Clients.Application.Commands.CreateBooking;
 
 public class CreateBookingHandler(
     IBookingRepository bookingRepository,
-    IClientRepository clientRepository) : IMessageHandler<CreateBookingMessage, MbResult<long>>
+    IClientRepository clientRepository,
+    ITrainingSessionRepository trainingSessionRepository) : IMessageHandler<CreateBookingMessage, MbResult<long>>
 {
     public async Task<MbResult<long>> Handle(CreateBookingMessage request, CancellationToken cancellationToken)
     {
         var clientExists = await clientRepository.ExistsAsync(request.ClientId, cancellationToken);
-
         if (!clientExists)
         {
             return MbResult<long>.Failure(new MbError(
@@ -23,7 +24,15 @@ public class CreateBookingHandler(
                 detail: "Клиента не существует"));
         }
 
-        // TODO: Сделать проверку на расписание
+        var sessionExists = await trainingSessionRepository.ExistsAsync(request.Request.SessionId, cancellationToken);
+        if (!sessionExists)
+        {
+            return MbResult<long>.Failure(new MbError(
+                title: "Training session not found",
+                status: StatusCodes.Status409Conflict,
+                detail: "Занятие не найдено."));
+        }
+        
         var booking = new DbBooking
         {
             ClientId = request.ClientId,

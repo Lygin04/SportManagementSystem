@@ -3,7 +3,8 @@ using SportManagementSystem.Repositories.Abstract;
 
 namespace SportManagementSystem.Modules.Scheduling.Domain.Repositories;
 
-public interface ITrainingSessionRepository : IBaseRepository<DbTrainingSession>
+public interface ITrainingSessionRepository : IBaseRepository<DbTrainingSession>,
+    IExistsByIdRepository<DbTrainingSession>
 {
-    
+
 }

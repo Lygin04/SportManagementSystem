@@ -1,4 +1,4 @@
-using SportManagementSystem.Entities.Enums;
+using SportManagementSystem.Modules.Clients.Domain.Enums;
 using SportManagementSystem.Modules.Services.Domain.Entities;
 using SportManagementSystem.Modules.Users.Domain.Entities;
 

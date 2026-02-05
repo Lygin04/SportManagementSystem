@@ -10,6 +10,10 @@ namespace SportManagementSystem.Controllers;
 
 public class ServicePricesController(IMediator mediator) : ApiControllerV1WithAuth
 {
+    
+    /// <summary>
+    /// Создать цену на услугу.
+    /// </summary>
     [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Create(CreateServicePriceRequest request, CancellationToken ct)
@@ -20,6 +24,9 @@ public class ServicePricesController(IMediator mediator) : ApiControllerV1WithAu
             : ToActionResult(result);
     }
 
+    /// <summary>
+    /// Получить цену на услугу по идентификатору.
+    /// </summary>
     [HttpGet("{id:long}")]
     public async Task<IActionResult> GetById(long id, CancellationToken ct)
     {

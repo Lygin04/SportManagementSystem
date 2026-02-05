@@ -11,6 +11,9 @@ namespace SportManagementSystem.Controllers;
 
 public class RoomsController(IMediator mediator) : ApiControllerV1WithAuth
 {
+    /// <summary>
+    /// Создать помещение в спорт. орг..
+    /// </summary>
     [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Create(CreateRoomRequest request, CancellationToken ct)
@@ -20,7 +23,10 @@ public class RoomsController(IMediator mediator) : ApiControllerV1WithAuth
             ? Created(nameof(GetById), new { Id = result.Data})
             : ToActionResult(result);    
     }
-
+    
+    /// <summary>
+    /// Получить помещение в спорт. орг. по идентификатору.
+    /// </summary>
     [HttpGet("{id:long}")]
     public async Task<IActionResult> GetById(long id, CancellationToken ct)
     {
@@ -28,6 +34,9 @@ public class RoomsController(IMediator mediator) : ApiControllerV1WithAuth
         return ToActionResult(result);
     }
 
+    /// <summary>
+    /// Получить все помещения в филиале спорт. орг.
+    /// </summary>
     [HttpGet("branch/{branchId:long}")]
     public async Task<IActionResult> GetByBranchId(long branchId, CancellationToken ct)
     {

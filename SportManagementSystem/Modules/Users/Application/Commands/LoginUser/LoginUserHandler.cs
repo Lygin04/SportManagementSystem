@@ -2,8 +2,8 @@ using System.Security.Claims;
 using SportManagementSystem.BuildingBlocks;
 using SportManagementSystem.BuildingBlocks.Abstractions;
 using SportManagementSystem.BuildingBlocks.Authentication.Hash.Interfaces;
-using SportManagementSystem.Entities.Enums;
 using SportManagementSystem.Modules.Users.Contracts.Response;
+using SportManagementSystem.Modules.Users.Domain.Enums;
 using SportManagementSystem.Modules.Users.Domain.Repositories;
 using SportManagementSystem.Modules.Users.Domain.Services;
 

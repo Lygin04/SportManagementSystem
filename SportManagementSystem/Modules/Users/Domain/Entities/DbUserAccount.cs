@@ -1,4 +1,4 @@
-using SportManagementSystem.Entities.Enums;
+using SportManagementSystem.Modules.Users.Domain.Enums;
 
 namespace SportManagementSystem.Modules.Users.Domain.Entities;
 

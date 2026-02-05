@@ -1,7 +1,7 @@
 ﻿using SportManagementSystem.BuildingBlocks;
 using SportManagementSystem.BuildingBlocks.Abstractions;
-using SportManagementSystem.Entities.Enums;
 using SportManagementSystem.Modules.Clients.Domain.Entities;
+using SportManagementSystem.Modules.Clients.Domain.Enums;
 using SportManagementSystem.Modules.Clients.Domain.Repositories;
 using SportManagementSystem.Modules.Services.Domain.Repositories;
 using SportManagementSystem.Modules.Users.Domain.Repositories;

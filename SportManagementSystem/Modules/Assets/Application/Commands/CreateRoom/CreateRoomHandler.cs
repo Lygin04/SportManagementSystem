@@ -1,7 +1,7 @@
 using SportManagementSystem.BuildingBlocks;
 using SportManagementSystem.BuildingBlocks.Abstractions;
-using SportManagementSystem.Entities.Enums;
 using SportManagementSystem.Modules.Assets.Domain.Entities;
+using SportManagementSystem.Modules.Assets.Domain.Enums;
 using SportManagementSystem.Modules.Assets.Domain.Repositories;
 
 namespace SportManagementSystem.Modules.Assets.Application.Commands.CreateRoom;

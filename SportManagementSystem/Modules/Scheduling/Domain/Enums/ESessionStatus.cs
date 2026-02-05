@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace SportManagementSystem.Entities.Enums;
+namespace SportManagementSystem.Modules.Scheduling.Domain.Enums;
 
 /// <summary>
 /// Статус проведения занятия.

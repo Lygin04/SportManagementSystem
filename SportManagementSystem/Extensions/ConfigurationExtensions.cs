@@ -1,4 +1,6 @@
+using System.Reflection;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace SportManagementSystem.Extensions;
 
@@ -45,6 +47,12 @@ public static class ConfigurationExtensions
             {
                 { schema, new[] { "Bearer" } }
             });
+            
+            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            options.IncludeXmlComments(xmlPath);
         });
+        
+        services.AddSwaggerExamplesFromAssemblyOf<Program>();
     }
 }

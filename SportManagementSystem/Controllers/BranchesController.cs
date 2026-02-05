@@ -11,6 +11,9 @@ namespace SportManagementSystem.Controllers;
 
 public class BranchesController(IMediator mediator) : ApiControllerV1WithAuth
 {
+    /// <summary>
+    /// Создать филиал спортивной организации.
+    /// </summary>
     [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Create(CreateBranchRequest request, CancellationToken cancellationToken)
@@ -21,6 +24,9 @@ public class BranchesController(IMediator mediator) : ApiControllerV1WithAuth
             : ToActionResult(result);
     }
 
+    /// <summary>
+    /// Получить филиал спортивной организации по идентификатору.
+    /// </summary>
     [HttpGet("{id:long}")]
     public async Task<IActionResult> GetById(long id, CancellationToken cancellationToken)
     {
@@ -28,6 +34,9 @@ public class BranchesController(IMediator mediator) : ApiControllerV1WithAuth
         return ToActionResult(result);
     }
 
+    /// <summary>
+    /// Получить все филиалы спортивных организаций.
+    /// </summary>
     [HttpGet]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {

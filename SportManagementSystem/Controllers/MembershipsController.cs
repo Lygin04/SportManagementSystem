@@ -9,6 +9,9 @@ namespace SportManagementSystem.Controllers;
 
 public class MembershipsController(IMediator mediator) : ApiControllerV1WithAuth
 {
+    /// <summary>
+    /// Создать абонемент клиента на услугу.
+    /// </summary>
     [HttpPost]
     public async Task<IActionResult> Create(CreateMembershipRequest request, CancellationToken ct)
     {
@@ -18,6 +21,9 @@ public class MembershipsController(IMediator mediator) : ApiControllerV1WithAuth
             : ToActionResult(result);
     }
 
+    /// <summary>
+    /// Получить абонемент клиента на услугу по идентификатору.
+    /// </summary>
     [HttpGet("{id:long}")]
     public async Task<IActionResult> GetById(long id, CancellationToken ct)
     {

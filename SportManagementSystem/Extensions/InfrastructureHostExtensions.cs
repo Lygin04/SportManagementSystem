@@ -1,4 +1,6 @@
 using FluentValidation;
+using Hangfire;
+using Hangfire.PostgreSql;
 using MediatR;
 using SportManagementSystem.BuildingBlocks.Behaviors;
 using SportManagementSystem.Modules.Assets.Domain.Repositories;
@@ -33,6 +35,23 @@ public static class InfrastructureHostExtensions
         ValidatorOptions.Global.DefaultClassLevelCascadeMode = CascadeMode.Continue;
         ValidatorOptions.Global.DefaultRuleLevelCascadeMode = CascadeMode.Stop;
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+        return services;
+    }
+
+    public static IServiceCollection AddHangfireWithPostgres(this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        var postgresConnectionString = configuration.GetConnectionString("Postgres")
+                                       ?? throw new InvalidOperationException("Connection string 'Postgres' was not found.");
+
+        services.AddHangfire(config => config
+            .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+            .UseSimpleAssemblyNameTypeSerializer()
+            .UseRecommendedSerializerSettings()
+            .UsePostgreSqlStorage(options =>
+                options.UseNpgsqlConnection(postgresConnectionString)));
+        services.AddHangfireServer();
 
         return services;
     }

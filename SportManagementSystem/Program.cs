@@ -1,9 +1,6 @@
-using Hangfire;
-using Hangfire.PostgreSql;
 using Microsoft.EntityFrameworkCore;
 using SportManagementSystem.Data;
 using SportManagementSystem.Extensions;
-using SportManagementSystem.Infrastructure.Hangfire;
 using SportManagementSystem.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,16 +14,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         )
     );
 
-var postgresConnectionString = configuration.GetConnectionString("Postgres")
-    ?? throw new InvalidOperationException("Connection string 'Postgres' was not found.");
-
-builder.Services.AddHangfire(config => config
-    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
-    .UseSimpleAssemblyNameTypeSerializer()
-    .UseRecommendedSerializerSettings()
-    .UsePostgreSqlStorage(options =>
-        options.UseNpgsqlConnection(postgresConnectionString)));
-builder.Services.AddHangfireServer();
+builder.Services.AddHangfireWithPostgres(configuration);
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly));
 builder.Services.AddFluentValidation();
@@ -54,10 +42,7 @@ using (var scope = app.Services.CreateScope())
 
 app.UseSwagger();
 app.UseSwaggerUI();
-app.UseHangfireDashboard("/hangfire", new DashboardOptions
-{
-    Authorization = new[] { new AllowAllDashboardAuthorizationFilter() }
-});
+app.MapHangfireDashboardWithAuth();
 
 app.UseAuthorization();
 app.UseMiddleware<ExceptionHandlingMiddleware>();

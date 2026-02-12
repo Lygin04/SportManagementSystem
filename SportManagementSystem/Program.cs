@@ -30,8 +30,6 @@ builder.Services.AddApplication();
 
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 
-//builder.Services.AddCustomCors();
-
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -39,6 +37,13 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     await db.Database.MigrateAsync();
 }
+
+app.UseCors(cors =>
+{
+    cors.AllowAnyHeader();
+    cors.AllowAnyMethod();
+    cors.AllowAnyOrigin();
+});
 
 app.UseSwagger();
 app.UseSwaggerUI();

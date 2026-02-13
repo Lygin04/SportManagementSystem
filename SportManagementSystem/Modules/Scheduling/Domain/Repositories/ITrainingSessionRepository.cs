@@ -6,5 +6,5 @@ namespace SportManagementSystem.Modules.Scheduling.Domain.Repositories;
 public interface ITrainingSessionRepository : IBaseRepository<DbTrainingSession>,
     IExistsByIdRepository<DbTrainingSession>
 {
-
+    Task<int> MarkDoneAsync(CancellationToken ct);
 }

@@ -4,6 +4,7 @@ using SportManagementSystem.Modules.Assets.Domain.Entities;
 using SportManagementSystem.Modules.Assets.Domain.Enums;
 using SportManagementSystem.Modules.Clients.Domain.Entities;
 using SportManagementSystem.Modules.Clients.Domain.Enums;
+using SportManagementSystem.Modules.Images.Domain.Entities;
 using SportManagementSystem.Modules.Scheduling.Domain.Entities;
 using SportManagementSystem.Modules.Scheduling.Domain.Enums;
 using SportManagementSystem.Modules.Services.Domain.Entities;
@@ -27,6 +28,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<DbBranch> Branches => Set<DbBranch>();
     public DbSet<DbRoom> Rooms => Set<DbRoom>();
     public DbSet<DbEquipment> Equipments => Set<DbEquipment>();
+    public DbSet<DbImage> Images => Set<DbImage>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

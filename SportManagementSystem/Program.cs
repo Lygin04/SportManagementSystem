@@ -1,7 +1,9 @@
+using Hangfire;
 using Microsoft.EntityFrameworkCore;
 using SportManagementSystem.Data;
 using SportManagementSystem.Extensions;
 using SportManagementSystem.Middleware;
+using SportManagementSystem.Modules.Scheduling.Application.Dispatchers;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -15,6 +17,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     );
 
 builder.Services.AddHangfireWithPostgres(configuration);
+builder.Services.AddMinio(configuration);
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly));
 builder.Services.AddFluentValidation();
@@ -48,6 +51,11 @@ app.UseCors(cors =>
 app.UseSwagger();
 app.UseSwaggerUI();
 app.MapHangfireDashboardWithAuth();
+
+RecurringJob.AddOrUpdate<TrainingSessionStatusDispatcher>(
+    "training-session-status-dispatcher",
+    dispatcher => dispatcher.DispatchAsync(),
+    "*/5 * * * * *");
 
 app.UseAuthorization();
 app.UseMiddleware<ExceptionHandlingMiddleware>();

@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using SportManagementSystem;
 using SportManagementSystem.Data;
 
 #nullable disable
@@ -13,7 +12,7 @@ using SportManagementSystem.Data;
 namespace SportManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260124210833_InitialCreate")]
+    [Migration("20260213201715_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -36,36 +35,7 @@ namespace SportManagementSystem.Migrations
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "e_user_role", new[] { "admin", "manager", "trainer", "cashier", "client" });
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("SportManagementSystem.Entities.DbBooking", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTime>("Booked")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<long?>("ClientId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("SessionId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClientId");
-
-                    b.HasIndex("SessionId");
-
-                    b.ToTable("Bookings");
-                });
-
-            modelBuilder.Entity("SportManagementSystem.Entities.DbBranch", b =>
+            modelBuilder.Entity("SportManagementSystem.Modules.Assets.Domain.Entities.DbBranch", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -91,46 +61,7 @@ namespace SportManagementSystem.Migrations
                     b.ToTable("Branches");
                 });
 
-            modelBuilder.Entity("SportManagementSystem.Entities.DbClient", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<DateOnly?>("BirthDate")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("Modified")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Patronymic")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("RegisterDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Clients");
-                });
-
-            modelBuilder.Entity("SportManagementSystem.Entities.DbEquipment", b =>
+            modelBuilder.Entity("SportManagementSystem.Modules.Assets.Domain.Entities.DbEquipment", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -158,45 +89,7 @@ namespace SportManagementSystem.Migrations
                     b.ToTable("Equipments");
                 });
 
-            modelBuilder.Entity("SportManagementSystem.Entities.DbMembership", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("ClientId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateOnly>("EndDate")
-                        .HasColumnType("date");
-
-                    b.Property<int>("RemainingVisits")
-                        .HasColumnType("integer");
-
-                    b.Property<long>("SportServiceId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateOnly>("StartDate")
-                        .HasColumnType("date");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("TotalVisits")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClientId");
-
-                    b.HasIndex("SportServiceId");
-
-                    b.ToTable("Memberships");
-                });
-
-            modelBuilder.Entity("SportManagementSystem.Entities.DbRoom", b =>
+            modelBuilder.Entity("SportManagementSystem.Modules.Assets.Domain.Entities.DbRoom", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -227,7 +120,7 @@ namespace SportManagementSystem.Migrations
                     b.ToTable("Rooms");
                 });
 
-            modelBuilder.Entity("SportManagementSystem.Entities.DbServicePrice", b =>
+            modelBuilder.Entity("SportManagementSystem.Modules.Clients.Domain.Entities.DbBooking", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -235,29 +128,99 @@ namespace SportManagementSystem.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("numeric");
+                    b.Property<DateTime>("Booked")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("Currency")
+                    b.Property<long?>("ClientId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("SessionId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("SessionId");
+
+                    b.ToTable("Bookings");
+                });
+
+            modelBuilder.Entity("SportManagementSystem.Modules.Clients.Domain.Entities.DbMembership", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("ClientId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateOnly>("EndDate")
+                        .HasColumnType("date");
+
+                    b.Property<int?>("RemainingVisits")
                         .HasColumnType("integer");
 
                     b.Property<long>("SportServiceId")
                         .HasColumnType("bigint");
 
-                    b.Property<DateOnly>("ValidFrom")
+                    b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
 
-                    b.Property<DateOnly>("ValidTo")
-                        .HasColumnType("date");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TotalVisits")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ClientId");
+
                     b.HasIndex("SportServiceId");
 
-                    b.ToTable("ServicePrices");
+                    b.ToTable("Memberships");
                 });
 
-            modelBuilder.Entity("SportManagementSystem.Entities.DbServiceSchedule", b =>
+            modelBuilder.Entity("SportManagementSystem.Modules.Images.Domain.Entities.DbImage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Bucket")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<long>("Length")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ObjectName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("SportManagementSystem.Modules.Scheduling.Domain.Entities.DbServiceSchedule", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -297,7 +260,74 @@ namespace SportManagementSystem.Migrations
                     b.ToTable("ServiceSchedules");
                 });
 
-            modelBuilder.Entity("SportManagementSystem.Entities.DbSportService", b =>
+            modelBuilder.Entity("SportManagementSystem.Modules.Scheduling.Domain.Entities.DbTrainingSession", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("EndedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("ScheduleId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("SportServiceId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("StartedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("TrainerId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ScheduleId");
+
+                    b.HasIndex("SportServiceId");
+
+                    b.HasIndex("TrainerId");
+
+                    b.ToTable("TrainingSessions");
+                });
+
+            modelBuilder.Entity("SportManagementSystem.Modules.Services.Domain.Entities.DbServicePrice", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("Currency")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("SportServiceId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateOnly>("ValidFrom")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("ValidTo")
+                        .HasColumnType("date");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SportServiceId");
+
+                    b.ToTable("ServicePrices");
+                });
+
+            modelBuilder.Entity("SportManagementSystem.Modules.Services.Domain.Entities.DbSportService", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -336,7 +366,7 @@ namespace SportManagementSystem.Migrations
                     b.ToTable("SportServices");
                 });
 
-            modelBuilder.Entity("SportManagementSystem.Entities.DbStaff", b =>
+            modelBuilder.Entity("SportManagementSystem.Modules.Users.Domain.Entities.DbClient", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -344,8 +374,51 @@ namespace SportManagementSystem.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("Email")
+                    b.Property<DateOnly>("BirthDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("Modified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Patronymic")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("RegisterDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Clients");
+                });
+
+            modelBuilder.Entity("SportManagementSystem.Modules.Users.Domain.Entities.DbStaff", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateOnly>("BirthDate")
+                        .HasColumnType("date");
+
+                    b.Property<int?>("BranchId")
+                        .HasColumnType("integer");
+
+                    b.Property<long?>("BranchId1")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -359,51 +432,17 @@ namespace SportManagementSystem.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Phone")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Role")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BranchId1");
 
                     b.ToTable("Staffs");
                 });
 
-            modelBuilder.Entity("SportManagementSystem.Entities.DbTrainingSession", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
-
-                    b.Property<long?>("ScheduleId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("SportServiceId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<long?>("TrainerId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ScheduleId");
-
-                    b.HasIndex("SportServiceId");
-
-                    b.HasIndex("TrainerId");
-
-                    b.ToTable("TrainingSessions");
-                });
-
-            modelBuilder.Entity("SportManagementSystem.Entities.DbUserAccount", b =>
+            modelBuilder.Entity("SportManagementSystem.Modules.Users.Domain.Entities.DbUserAccount", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -416,6 +455,10 @@ namespace SportManagementSystem.Migrations
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("LastLogin")
                         .HasColumnType("timestamp with time zone");
@@ -436,29 +479,47 @@ namespace SportManagementSystem.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ClientId");
 
-                    b.HasIndex("StaffId");
-
-                    b.HasIndex("UserName")
+                    b.HasIndex("Email")
                         .IsUnique();
+
+                    b.HasIndex("StaffId");
 
                     b.ToTable("UserAccounts");
                 });
 
-            modelBuilder.Entity("SportManagementSystem.Entities.DbBooking", b =>
+            modelBuilder.Entity("SportManagementSystem.Modules.Assets.Domain.Entities.DbEquipment", b =>
                 {
-                    b.HasOne("SportManagementSystem.Entities.DbClient", "Client")
+                    b.HasOne("SportManagementSystem.Modules.Assets.Domain.Entities.DbRoom", "Room")
+                        .WithMany("Equipments")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("SportManagementSystem.Modules.Assets.Domain.Entities.DbRoom", b =>
+                {
+                    b.HasOne("SportManagementSystem.Modules.Assets.Domain.Entities.DbBranch", "Branch")
+                        .WithMany("Rooms")
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
+                });
+
+            modelBuilder.Entity("SportManagementSystem.Modules.Clients.Domain.Entities.DbBooking", b =>
+                {
+                    b.HasOne("SportManagementSystem.Modules.Users.Domain.Entities.DbClient", "Client")
                         .WithMany("Bookings")
                         .HasForeignKey("ClientId");
 
-                    b.HasOne("SportManagementSystem.Entities.DbTrainingSession", "Session")
+                    b.HasOne("SportManagementSystem.Modules.Scheduling.Domain.Entities.DbTrainingSession", "Session")
                         .WithMany()
                         .HasForeignKey("SessionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -469,26 +530,15 @@ namespace SportManagementSystem.Migrations
                     b.Navigation("Session");
                 });
 
-            modelBuilder.Entity("SportManagementSystem.Entities.DbEquipment", b =>
+            modelBuilder.Entity("SportManagementSystem.Modules.Clients.Domain.Entities.DbMembership", b =>
                 {
-                    b.HasOne("SportManagementSystem.Entities.DbRoom", "Room")
-                        .WithMany("Equipments")
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Room");
-                });
-
-            modelBuilder.Entity("SportManagementSystem.Entities.DbMembership", b =>
-                {
-                    b.HasOne("SportManagementSystem.Entities.DbClient", "Client")
+                    b.HasOne("SportManagementSystem.Modules.Users.Domain.Entities.DbClient", "Client")
                         .WithMany("Memberships")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SportManagementSystem.Entities.DbSportService", "SportService")
+                    b.HasOne("SportManagementSystem.Modules.Services.Domain.Entities.DbSportService", "SportService")
                         .WithMany()
                         .HasForeignKey("SportServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -499,41 +549,19 @@ namespace SportManagementSystem.Migrations
                     b.Navigation("SportService");
                 });
 
-            modelBuilder.Entity("SportManagementSystem.Entities.DbRoom", b =>
+            modelBuilder.Entity("SportManagementSystem.Modules.Scheduling.Domain.Entities.DbServiceSchedule", b =>
                 {
-                    b.HasOne("SportManagementSystem.Entities.DbBranch", "Branch")
-                        .WithMany("Rooms")
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-                });
-
-            modelBuilder.Entity("SportManagementSystem.Entities.DbServicePrice", b =>
-                {
-                    b.HasOne("SportManagementSystem.Entities.DbSportService", "SportService")
-                        .WithMany("Prices")
-                        .HasForeignKey("SportServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SportService");
-                });
-
-            modelBuilder.Entity("SportManagementSystem.Entities.DbServiceSchedule", b =>
-                {
-                    b.HasOne("SportManagementSystem.Entities.DbRoom", "Room")
+                    b.HasOne("SportManagementSystem.Modules.Assets.Domain.Entities.DbRoom", "Room")
                         .WithMany()
                         .HasForeignKey("RoomId");
 
-                    b.HasOne("SportManagementSystem.Entities.DbSportService", "SportService")
+                    b.HasOne("SportManagementSystem.Modules.Services.Domain.Entities.DbSportService", "SportService")
                         .WithMany()
                         .HasForeignKey("SportServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SportManagementSystem.Entities.DbStaff", "Staff")
+                    b.HasOne("SportManagementSystem.Modules.Users.Domain.Entities.DbStaff", "Staff")
                         .WithMany()
                         .HasForeignKey("StaffId");
 
@@ -544,21 +572,23 @@ namespace SportManagementSystem.Migrations
                     b.Navigation("Staff");
                 });
 
-            modelBuilder.Entity("SportManagementSystem.Entities.DbTrainingSession", b =>
+            modelBuilder.Entity("SportManagementSystem.Modules.Scheduling.Domain.Entities.DbTrainingSession", b =>
                 {
-                    b.HasOne("SportManagementSystem.Entities.DbServiceSchedule", "Schedule")
+                    b.HasOne("SportManagementSystem.Modules.Scheduling.Domain.Entities.DbServiceSchedule", "Schedule")
                         .WithMany()
                         .HasForeignKey("ScheduleId");
 
-                    b.HasOne("SportManagementSystem.Entities.DbSportService", "SportService")
+                    b.HasOne("SportManagementSystem.Modules.Services.Domain.Entities.DbSportService", "SportService")
                         .WithMany()
                         .HasForeignKey("SportServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SportManagementSystem.Entities.DbStaff", "Trainer")
+                    b.HasOne("SportManagementSystem.Modules.Users.Domain.Entities.DbStaff", "Trainer")
                         .WithMany()
-                        .HasForeignKey("TrainerId");
+                        .HasForeignKey("TrainerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Schedule");
 
@@ -567,14 +597,34 @@ namespace SportManagementSystem.Migrations
                     b.Navigation("Trainer");
                 });
 
-            modelBuilder.Entity("SportManagementSystem.Entities.DbUserAccount", b =>
+            modelBuilder.Entity("SportManagementSystem.Modules.Services.Domain.Entities.DbServicePrice", b =>
                 {
-                    b.HasOne("SportManagementSystem.Entities.DbClient", "Client")
+                    b.HasOne("SportManagementSystem.Modules.Services.Domain.Entities.DbSportService", "SportService")
+                        .WithMany("Prices")
+                        .HasForeignKey("SportServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SportService");
+                });
+
+            modelBuilder.Entity("SportManagementSystem.Modules.Users.Domain.Entities.DbStaff", b =>
+                {
+                    b.HasOne("SportManagementSystem.Modules.Assets.Domain.Entities.DbBranch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchId1");
+
+                    b.Navigation("Branch");
+                });
+
+            modelBuilder.Entity("SportManagementSystem.Modules.Users.Domain.Entities.DbUserAccount", b =>
+                {
+                    b.HasOne("SportManagementSystem.Modules.Users.Domain.Entities.DbClient", "Client")
                         .WithMany()
                         .HasForeignKey("ClientId");
 
-                    b.HasOne("SportManagementSystem.Entities.DbStaff", "Staff")
-                        .WithMany("Accounts")
+                    b.HasOne("SportManagementSystem.Modules.Users.Domain.Entities.DbStaff", "Staff")
+                        .WithMany()
                         .HasForeignKey("StaffId");
 
                     b.Navigation("Client");
@@ -582,31 +632,26 @@ namespace SportManagementSystem.Migrations
                     b.Navigation("Staff");
                 });
 
-            modelBuilder.Entity("SportManagementSystem.Entities.DbBranch", b =>
+            modelBuilder.Entity("SportManagementSystem.Modules.Assets.Domain.Entities.DbBranch", b =>
                 {
                     b.Navigation("Rooms");
                 });
 
-            modelBuilder.Entity("SportManagementSystem.Entities.DbClient", b =>
-                {
-                    b.Navigation("Bookings");
-
-                    b.Navigation("Memberships");
-                });
-
-            modelBuilder.Entity("SportManagementSystem.Entities.DbRoom", b =>
+            modelBuilder.Entity("SportManagementSystem.Modules.Assets.Domain.Entities.DbRoom", b =>
                 {
                     b.Navigation("Equipments");
                 });
 
-            modelBuilder.Entity("SportManagementSystem.Entities.DbSportService", b =>
+            modelBuilder.Entity("SportManagementSystem.Modules.Services.Domain.Entities.DbSportService", b =>
                 {
                     b.Navigation("Prices");
                 });
 
-            modelBuilder.Entity("SportManagementSystem.Entities.DbStaff", b =>
+            modelBuilder.Entity("SportManagementSystem.Modules.Users.Domain.Entities.DbClient", b =>
                 {
-                    b.Navigation("Accounts");
+                    b.Navigation("Bookings");
+
+                    b.Navigation("Memberships");
                 });
 #pragma warning restore 612, 618
         }

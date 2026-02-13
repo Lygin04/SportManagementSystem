@@ -2,11 +2,15 @@ using FluentValidation;
 using Hangfire;
 using Hangfire.PostgreSql;
 using MediatR;
+using Minio;
 using SportManagementSystem.BuildingBlocks.Behaviors;
+using SportManagementSystem.Modules.Images.Infrastructure;
 using SportManagementSystem.Modules.Assets.Domain.Repositories;
 using SportManagementSystem.Modules.Assets.Infrastructure.Repositories;
 using SportManagementSystem.Modules.Clients.Domain.Repositories;
 using SportManagementSystem.Modules.Clients.Infrastructure.Repositories;
+using SportManagementSystem.Modules.Images.Domain.Repositories;
+using SportManagementSystem.Modules.Images.Infrastructure.Repositories;
 using SportManagementSystem.Modules.Scheduling.Domain.Repositories;
 using SportManagementSystem.Modules.Scheduling.Infrastructure.Repositories;
 using SportManagementSystem.Modules.Services.Domain.Repositories;
@@ -55,6 +59,22 @@ public static class InfrastructureHostExtensions
 
         return services;
     }
+
+    public static IServiceCollection AddMinio(this IServiceCollection services, IConfiguration configuration)
+    {
+        var options = configuration.GetSection("Minio").Get<MinioOptions>() ?? new MinioOptions();
+        services.AddSingleton(options);
+
+        var client = new MinioClient()
+            .WithEndpoint(options.Endpoint)
+            .WithCredentials(options.AccessKey, options.SecretKey)
+            .WithSSL(options.UseSsl)
+            .Build();
+
+        services.AddSingleton<IMinioClient>(client);
+
+        return services;
+    }
     
     /// <summary>
     /// Добавляет инфраструктурные сервисы в коллекцию сервисов.
@@ -71,6 +91,9 @@ public static class InfrastructureHostExtensions
         services.AddScoped<IBranchRepository, BranchRepository>();
         services.AddScoped<IEquipmentRepository, EquipmentRepository>();
         services.AddScoped<IRoomRepository, RoomRepository>();
+
+        // Images Module
+        services.AddScoped<IImageRepository, ImageRepository>();
         
         // Service Module
         services.AddScoped<ISportServiceRepository, SportServiceRepository>();

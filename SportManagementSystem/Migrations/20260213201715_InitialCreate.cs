@@ -49,15 +49,31 @@ namespace SportManagementSystem.Migrations
                     FirstName = table.Column<string>(type: "text", nullable: false),
                     LastName = table.Column<string>(type: "text", nullable: false),
                     Patronymic = table.Column<string>(type: "text", nullable: true),
-                    BirthDate = table.Column<DateOnly>(type: "date", nullable: true),
-                    Email = table.Column<string>(type: "text", nullable: true),
-                    Phone = table.Column<string>(type: "text", nullable: true),
+                    BirthDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    Phone = table.Column<string>(type: "text", nullable: false),
                     RegisterDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Clients", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Images",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ObjectName = table.Column<string>(type: "text", nullable: false),
+                    Bucket = table.Column<string>(type: "text", nullable: false),
+                    FileName = table.Column<string>(type: "text", nullable: false),
+                    ContentType = table.Column<string>(type: "text", nullable: false),
+                    Length = table.Column<long>(type: "bigint", nullable: false),
+                    CreatedAtUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Images", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -77,24 +93,6 @@ namespace SportManagementSystem.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SportServices", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Staffs",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    FirstName = table.Column<string>(type: "text", nullable: false),
-                    LastName = table.Column<string>(type: "text", nullable: false),
-                    Patronymic = table.Column<string>(type: "text", nullable: true),
-                    Email = table.Column<string>(type: "text", nullable: true),
-                    Phone = table.Column<string>(type: "text", nullable: true),
-                    Role = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Staffs", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -121,6 +119,30 @@ namespace SportManagementSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Staffs",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FirstName = table.Column<string>(type: "text", nullable: false),
+                    LastName = table.Column<string>(type: "text", nullable: false),
+                    Patronymic = table.Column<string>(type: "text", nullable: true),
+                    Phone = table.Column<string>(type: "text", nullable: false),
+                    BirthDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    BranchId = table.Column<int>(type: "integer", nullable: true),
+                    BranchId1 = table.Column<long>(type: "bigint", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Staffs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Staffs_Branches_BranchId1",
+                        column: x => x.BranchId1,
+                        principalTable: "Branches",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Memberships",
                 columns: table => new
                 {
@@ -131,7 +153,7 @@ namespace SportManagementSystem.Migrations
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
                     EndDate = table.Column<DateOnly>(type: "date", nullable: false),
                     TotalVisits = table.Column<int>(type: "integer", nullable: false),
-                    RemainingVisits = table.Column<int>(type: "integer", nullable: false),
+                    RemainingVisits = table.Column<int>(type: "integer", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -161,7 +183,7 @@ namespace SportManagementSystem.Migrations
                     Amount = table.Column<decimal>(type: "numeric", nullable: false),
                     Currency = table.Column<int>(type: "integer", nullable: false),
                     ValidFrom = table.Column<DateOnly>(type: "date", nullable: false),
-                    ValidTo = table.Column<DateOnly>(type: "date", nullable: false)
+                    ValidTo = table.Column<DateOnly>(type: "date", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -172,37 +194,6 @@ namespace SportManagementSystem.Migrations
                         principalTable: "SportServices",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserAccounts",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserName = table.Column<string>(type: "text", nullable: false),
-                    PasswordHash = table.Column<string>(type: "text", nullable: false),
-                    Role = table.Column<int>(type: "integer", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false),
-                    StaffId = table.Column<long>(type: "bigint", nullable: true),
-                    ClientId = table.Column<long>(type: "bigint", nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    LastLogin = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserAccounts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserAccounts_Clients_ClientId",
-                        column: x => x.ClientId,
-                        principalTable: "Clients",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_UserAccounts_Staffs_StaffId",
-                        column: x => x.StaffId,
-                        principalTable: "Staffs",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -263,6 +254,37 @@ namespace SportManagementSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserAccounts",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    PasswordHash = table.Column<string>(type: "text", nullable: false),
+                    Role = table.Column<int>(type: "integer", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
+                    StaffId = table.Column<long>(type: "bigint", nullable: true),
+                    ClientId = table.Column<long>(type: "bigint", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    LastLogin = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserAccounts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserAccounts_Clients_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "Clients",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserAccounts_Staffs_StaffId",
+                        column: x => x.StaffId,
+                        principalTable: "Staffs",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TrainingSessions",
                 columns: table => new
                 {
@@ -270,8 +292,9 @@ namespace SportManagementSystem.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     SportServiceId = table.Column<long>(type: "bigint", nullable: false),
                     ScheduleId = table.Column<long>(type: "bigint", nullable: true),
-                    Date = table.Column<DateOnly>(type: "date", nullable: false),
-                    TrainerId = table.Column<long>(type: "bigint", nullable: true),
+                    StartedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    EndedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    TrainerId = table.Column<long>(type: "bigint", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -292,7 +315,8 @@ namespace SportManagementSystem.Migrations
                         name: "FK_TrainingSessions_Staffs_TrainerId",
                         column: x => x.TrainerId,
                         principalTable: "Staffs",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -379,6 +403,11 @@ namespace SportManagementSystem.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Staffs_BranchId1",
+                table: "Staffs",
+                column: "BranchId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TrainingSessions_ScheduleId",
                 table: "TrainingSessions",
                 column: "ScheduleId");
@@ -399,15 +428,15 @@ namespace SportManagementSystem.Migrations
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserAccounts_Email",
+                table: "UserAccounts",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserAccounts_StaffId",
                 table: "UserAccounts",
                 column: "StaffId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserAccounts_UserName",
-                table: "UserAccounts",
-                column: "UserName",
-                unique: true);
         }
 
         /// <inheritdoc />
@@ -418,6 +447,9 @@ namespace SportManagementSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "Equipments");
+
+            migrationBuilder.DropTable(
+                name: "Images");
 
             migrationBuilder.DropTable(
                 name: "Memberships");

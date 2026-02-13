@@ -1,5 +1,6 @@
 using Hangfire;
 using SportManagementSystem.Infrastructure.Hangfire;
+using SportManagementSystem.Modules.Scheduling.Application.Dispatchers;
 using SportManagementSystem.Modules.Users.Domain.Services;
 using SportManagementSystem.Modules.Users.Infrastructure.Services;
 
@@ -20,6 +21,7 @@ public static class ApplicationHostExtensions
     public static void AddApplication(this IServiceCollection services)
     {
         services.AddScoped<IJwtTokenService, JwtTokenService>();
+        services.AddScoped<TrainingSessionStatusDispatcher>();
     }
 
     public static IEndpointRouteBuilder MapHangfireDashboardWithAuth(this IEndpointRouteBuilder app)

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SportManagementSystem.Data;
 using SportManagementSystem.Modules.Scheduling.Domain.Entities;
+using SportManagementSystem.Modules.Scheduling.Domain.Enums;
 using SportManagementSystem.Modules.Scheduling.Domain.Repositories;
 
 namespace SportManagementSystem.Modules.Scheduling.Infrastructure.Repositories;
@@ -30,5 +31,12 @@ public class TrainingSessionRepository(ApplicationDbContext db) : ITrainingSessi
     public async Task<bool> ExistsAsync(long id, CancellationToken ct)
     {
         return await db.TrainingSessions.AnyAsync(x => x.Id == id, ct);
+    }
+
+    public async Task<int> MarkDoneAsync(CancellationToken ct)
+    {
+        return await db.TrainingSessions
+            .Where(x => x.EndedDate < DateTime.UtcNow && x.Status == ESessionStatus.Planned)
+            .ExecuteUpdateAsync(update => update.SetProperty(x => x.Status, ESessionStatus.Done), ct);
     }
 }

@@ -14,6 +14,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         )
     );
 
+builder.Services.AddHangfireWithPostgres(configuration);
+
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly));
 builder.Services.AddFluentValidation();
 builder.Services.AddJwtAuth(configuration);
@@ -40,6 +42,7 @@ using (var scope = app.Services.CreateScope())
 
 app.UseSwagger();
 app.UseSwaggerUI();
+app.MapHangfireDashboardWithAuth();
 
 app.UseAuthorization();
 app.UseMiddleware<ExceptionHandlingMiddleware>();

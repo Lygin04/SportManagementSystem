@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		compose.yaml = compose.yaml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportManagementSystem.Tests", "SportManagementSystem.Tests\SportManagementSystem.Tests.csproj", "{287E5B3F-AB0A-490A-852C-05C067D6F126}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,5 +19,9 @@ Global
 		{20DACCF7-8C30-4E38-B6A2-0CF0C9C349AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20DACCF7-8C30-4E38-B6A2-0CF0C9C349AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20DACCF7-8C30-4E38-B6A2-0CF0C9C349AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{287E5B3F-AB0A-490A-852C-05C067D6F126}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{287E5B3F-AB0A-490A-852C-05C067D6F126}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{287E5B3F-AB0A-490A-852C-05C067D6F126}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{287E5B3F-AB0A-490A-852C-05C067D6F126}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace SportManagementSystem.Entities.Enums;
+namespace SportManagementSystem.Modules.Services.Domain.Enums;
 
 /// <summary>
 /// Категория спортивной услуги.

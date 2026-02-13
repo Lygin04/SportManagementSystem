@@ -247,7 +247,7 @@ namespace SportManagementSystem.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.Property<long?>("TrainerId")
+                    b.Property<long>("TrainerId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -550,7 +550,9 @@ namespace SportManagementSystem.Migrations
 
                     b.HasOne("SportManagementSystem.Modules.Users.Domain.Entities.DbStaff", "Trainer")
                         .WithMany()
-                        .HasForeignKey("TrainerId");
+                        .HasForeignKey("TrainerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Schedule");
 

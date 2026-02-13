@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace SportManagementSystem.Entities.Enums;
+namespace SportManagementSystem.Modules.Services.Domain.Enums;
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum EIsoCurrency

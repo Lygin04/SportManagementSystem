@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace SportManagementSystem.Entities.Enums;
+namespace SportManagementSystem.Modules.Users.Domain.Enums;
 
 /// <summary>
 /// Статус клиента спортивной организации.

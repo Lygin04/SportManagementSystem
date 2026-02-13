@@ -10,6 +10,9 @@ namespace SportManagementSystem.Controllers;
 
 public class EquipmentsController(IMediator mediator) : ApiControllerV1WithAuth
 {
+    /// <summary>
+    /// Создать спортивное оборудование.
+    /// </summary>
     [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Create(CreateEquipmentRequest request, CancellationToken cancellationToken)
@@ -19,7 +22,10 @@ public class EquipmentsController(IMediator mediator) : ApiControllerV1WithAuth
             ? Created(nameof(GetById), new { Id = result.Data})
             : ToActionResult(result);    
     }
-
+    
+    /// <summary>
+    /// Получить спортивное оборудование по идентификатору.
+    /// </summary>
     [HttpGet("{id:long}")]
     public async Task<IActionResult> GetById(long id, CancellationToken cancellationToken)
     {

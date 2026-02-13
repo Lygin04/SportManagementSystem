@@ -1,10 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using SportManagementSystem.Entities.Enums;
 using SportManagementSystem.Modules.Assets.Domain.Entities;
+using SportManagementSystem.Modules.Assets.Domain.Enums;
 using SportManagementSystem.Modules.Clients.Domain.Entities;
+using SportManagementSystem.Modules.Clients.Domain.Enums;
 using SportManagementSystem.Modules.Scheduling.Domain.Entities;
+using SportManagementSystem.Modules.Scheduling.Domain.Enums;
 using SportManagementSystem.Modules.Services.Domain.Entities;
+using SportManagementSystem.Modules.Services.Domain.Enums;
 using SportManagementSystem.Modules.Users.Domain.Entities;
+using SportManagementSystem.Modules.Users.Domain.Enums;
 
 namespace SportManagementSystem.Data;
 

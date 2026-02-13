@@ -10,6 +10,9 @@ namespace SportManagementSystem.Controllers;
 
 public class SportServicesController(IMediator mediator) : ApiControllerV1WithAuth
 {
+    /// <summary>
+    /// Создать спорт. услугу.
+    /// </summary>
     [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Create(CreateSportServiceRequest request, CancellationToken ct)
@@ -20,6 +23,9 @@ public class SportServicesController(IMediator mediator) : ApiControllerV1WithAu
             : ToActionResult(result);
     }
 
+    /// <summary>
+    /// Получить спорт. услугу по идентификатору.
+    /// </summary>
     [HttpGet("{id:long}")]
     public async Task<IActionResult> GetById(long id, CancellationToken ct)
     {

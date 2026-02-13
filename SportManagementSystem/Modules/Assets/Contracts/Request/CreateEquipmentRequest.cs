@@ -1,4 +1,4 @@
-using SportManagementSystem.Entities.Enums;
+using SportManagementSystem.Modules.Assets.Domain.Enums;
 
 namespace SportManagementSystem.Modules.Assets.Contracts.Request;
 

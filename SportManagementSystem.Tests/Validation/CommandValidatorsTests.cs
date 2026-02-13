@@ -1,9 +1,9 @@
-using SportManagementSystem.Entities.Enums;
 using SportManagementSystem.Modules.Clients.Application.Commands.CreateMembership;
 using SportManagementSystem.Modules.Clients.Contracts.Requests;
 using SportManagementSystem.Modules.Users.Application.Commands.LoginUser;
 using SportManagementSystem.Modules.Users.Application.Commands.RegisterStaff;
 using SportManagementSystem.Modules.Users.Contracts.Requests;
+using SportManagementSystem.Modules.Users.Domain.Enums;
 
 namespace SportManagementSystem.Tests.Validation;
 

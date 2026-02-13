@@ -1,9 +1,10 @@
 ﻿using SportManagementSystem.BuildingBlocks;
 using SportManagementSystem.BuildingBlocks.Abstractions;
-using SportManagementSystem.Entities.Enums;
 using SportManagementSystem.Modules.Scheduling.Domain.Entities;
+using SportManagementSystem.Modules.Scheduling.Domain.Enums;
 using SportManagementSystem.Modules.Scheduling.Domain.Repositories;
 using SportManagementSystem.Modules.Services.Domain.Repositories;
+using SportManagementSystem.Modules.Users.Domain.Enums;
 using SportManagementSystem.Modules.Users.Domain.Repositories;
 
 namespace SportManagementSystem.Modules.Scheduling.Application.Commands.CreateTrainingSession;

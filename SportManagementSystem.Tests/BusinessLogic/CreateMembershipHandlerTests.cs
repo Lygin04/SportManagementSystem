@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Http;
 using Moq;
-using SportManagementSystem.Entities.Enums;
 using SportManagementSystem.Modules.Clients.Application.Commands.CreateMembership;
 using SportManagementSystem.Modules.Clients.Contracts.Requests;
 using SportManagementSystem.Modules.Clients.Domain.Entities;
+using SportManagementSystem.Modules.Clients.Domain.Enums;
 using SportManagementSystem.Modules.Clients.Domain.Repositories;
 using SportManagementSystem.Modules.Services.Domain.Repositories;
 using SportManagementSystem.Modules.Users.Domain.Repositories;

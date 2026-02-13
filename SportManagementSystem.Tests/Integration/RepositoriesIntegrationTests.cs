@@ -1,9 +1,11 @@
-using SportManagementSystem.Entities.Enums;
 using SportManagementSystem.Modules.Clients.Domain.Entities;
+using SportManagementSystem.Modules.Clients.Domain.Enums;
 using SportManagementSystem.Modules.Clients.Infrastructure.Repositories;
 using SportManagementSystem.Modules.Services.Domain.Entities;
+using SportManagementSystem.Modules.Services.Domain.Enums;
 using SportManagementSystem.Modules.Services.Infrastructure.Repositories;
 using SportManagementSystem.Modules.Users.Domain.Entities;
+using SportManagementSystem.Modules.Users.Domain.Enums;
 using SportManagementSystem.Modules.Users.Infrastructure.Repositories;
 
 namespace SportManagementSystem.Tests.Integration;

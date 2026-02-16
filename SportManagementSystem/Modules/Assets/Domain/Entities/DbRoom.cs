@@ -1,4 +1,6 @@
+using System.Text.Json.Serialization;
 using SportManagementSystem.Modules.Assets.Domain.Enums;
+using SportManagementSystem.Modules.Images.Domain.Entities;
 
 namespace SportManagementSystem.Modules.Assets.Domain.Entities;
 
@@ -20,6 +22,7 @@ public class DbRoom
     /// <summary>
     /// 
     /// </summary>
+    [JsonIgnore]
     public DbBranch Branch { get; set; }
     
     /// <summary>
@@ -46,4 +49,9 @@ public class DbRoom
     /// Оборудование, размещенное в помещении.
     /// </summary>
     public ICollection<DbEquipment> Equipments { get; set; }
+    
+    /// <summary>
+    /// Фотографии помещения.
+    /// </summary>
+    public ICollection<DbImage> Images { get; set; } = new List<DbImage>();
 }

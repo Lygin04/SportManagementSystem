@@ -2,6 +2,6 @@
 using SportManagementSystem.BuildingBlocks.Abstractions;
 using SportManagementSystem.Modules.Users.Contracts.Response;
 
-namespace SportManagementSystem.Modules.Users.Application.Queries.GetUser;
+namespace SportManagementSystem.Modules.Users.Application.Queries.GetClient;
 
-public record GetUserMessage(long Id) : IMessage<MbResult<GetUserResponse>>;
+public record GetClientMessage(long Id) : IMessage<MbResult<GetUserResponse>>;

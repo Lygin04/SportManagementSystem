@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using SportManagementSystem.Data;
 using SportManagementSystem.Modules.Assets.Domain.Entities;
 using SportManagementSystem.Modules.Assets.Domain.Repositories;
+using SportManagementSystem.Modules.Images.Domain.Entities;
 
 namespace SportManagementSystem.Modules.Assets.Infrastructure.Repositories;
 
@@ -24,7 +25,22 @@ public class RoomRepository(ApplicationDbContext db) : IRoomRepository
 
     public async Task<DbRoom?> GetByIdAsync(long id, CancellationToken ct)
     {
-        return await db.Rooms.FindAsync(id, ct);
+        return await db.Rooms
+            .Include(r => r.Images)
+            .FirstOrDefaultAsync(r => r.Id == id, ct);
+    }
+
+    public async Task AddImage(DbRoom room, Guid imageId)
+    {
+        var trackedImage = db.Images.Local.FirstOrDefault(i => i.Id == imageId);
+        if (trackedImage is null)
+        {
+            trackedImage = new DbImage { Id = imageId };
+            db.Images.Attach(trackedImage);
+        }
+
+        room.Images.Add(trackedImage);
+        await db.SaveChangesAsync();
     }
 
     public async Task<List<DbRoom>?> GetByBranchAsync(long branchId, CancellationToken cancellationToken)

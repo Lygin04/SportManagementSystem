@@ -8,4 +8,5 @@ public class GetUserResponse
     public string? Patronymic { get; set; }
     public DateOnly? BirthDate { get; set; }
     public string? Phone { get; set; }
+    public Guid AvatarId { get; set; }
 }

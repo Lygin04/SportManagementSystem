@@ -1,4 +1,5 @@
 using SportManagementSystem.Modules.Assets.Domain.Enums;
+using SportManagementSystem.Modules.Images.Domain.Entities;
 
 namespace SportManagementSystem.Modules.Assets.Domain.Entities;
 
@@ -28,4 +29,9 @@ public class DbEquipment
     /// Техническое состояние.
     /// </summary>
     public EEquipmentCondition? Condition { get; set; }
+    
+    /// <summary>
+    /// Фотографии оборудования.
+    /// </summary>
+    public ICollection<DbImage> Images { get; set; } = new List<DbImage>();
 }

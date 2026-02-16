@@ -1,3 +1,5 @@
+using SportManagementSystem.Modules.Images.Domain.Entities;
+
 namespace SportManagementSystem.Modules.Assets.Domain.Entities;
 
 /// <summary>
@@ -34,4 +36,9 @@ public class DbBranch
     /// Помещения, принадлежащие филиалу.
     /// </summary>
     public ICollection<DbRoom> Rooms { get; set; } = new List<DbRoom>();
+    
+    /// <summary>
+    /// Фотографии спортивной организации.
+    /// </summary>
+    public ICollection<DbImage> Images { get; set; } = new List<DbImage>();
 }

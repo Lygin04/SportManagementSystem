@@ -31,4 +31,14 @@ public class ClientRepository(ApplicationDbContext db) : IClientRepository
     {
         return await db.Clients.AnyAsync(c => c.Id == id, ct);
     }
+
+    public async Task<bool> SetImageIdAsync(long clientId, Guid? imageId, CancellationToken ct)
+    {
+        var updatedRows = await db.Clients
+            .Where(c => c.Id == clientId)
+            .ExecuteUpdateAsync(setters => setters
+                .SetProperty(c => c.AvatarId, imageId), ct);
+
+        return updatedRows > 0;
+    }
 }

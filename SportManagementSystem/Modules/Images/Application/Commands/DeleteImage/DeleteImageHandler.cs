@@ -31,8 +31,9 @@ public class DeleteImageHandler(
                 .WithBucket(options.Bucket)
                 .WithObject(image.ObjectName);
 
-            await minioClient.RemoveObjectAsync(args, cancellationToken);
-            await imageRepository.DeleteAsync(request.Id, cancellationToken);
+            await Task.WhenAll(
+                minioClient.RemoveObjectAsync(args, cancellationToken),
+                imageRepository.DeleteAsync(request.Id, cancellationToken));
 
             return MbResult<Unit>.Success(Unit.Value);
         }

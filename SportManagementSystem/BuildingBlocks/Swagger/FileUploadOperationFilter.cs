@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -17,7 +16,10 @@ public class FileUploadOperationFilter : IOperationFilter
             return;
         }
 
-        operation.Parameters.Clear();
+        // Keep path parameters (e.g., {id}) so they show up in Swagger UI.
+        operation.Parameters = operation.Parameters
+            .Where(p => p.In == ParameterLocation.Path)
+            .ToList();
 
         var schema = new OpenApiSchema
         {

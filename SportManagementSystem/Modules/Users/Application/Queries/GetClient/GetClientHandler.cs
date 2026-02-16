@@ -4,14 +4,14 @@ using SportManagementSystem.Modules.Users.Contracts.Response;
 using SportManagementSystem.Modules.Users.Domain.Enums;
 using SportManagementSystem.Modules.Users.Domain.Repositories;
 
-namespace SportManagementSystem.Modules.Users.Application.Queries.GetUser;
+namespace SportManagementSystem.Modules.Users.Application.Queries.GetClient;
 
-public class GetUserHandler(
+public class GetClientHandler(
     IUserAccountRepository userAccountRepository,
     IClientRepository clientRepository,
-    IStaffRepository staffRepository) : IMessageHandler<GetUserMessage, MbResult<GetUserResponse>>
+    IStaffRepository staffRepository) : IMessageHandler<GetClientMessage, MbResult<GetUserResponse>>
 {
-    public async Task<MbResult<GetUserResponse>> Handle(GetUserMessage request, CancellationToken cancellationToken)
+    public async Task<MbResult<GetUserResponse>> Handle(GetClientMessage request, CancellationToken cancellationToken)
     {
         var userAccount = await userAccountRepository.GetByIdAsync(request.Id, cancellationToken);
         if (userAccount == null)
@@ -35,6 +35,9 @@ public class GetUserHandler(
             user.BirthDate = client.BirthDate;
             user.Patronymic = client.Patronymic;
             user.Phone = client.Phone;
+            
+            if(client.AvatarId != null)
+                user.AvatarId = client.AvatarId.Value;
         }
         else
         {
@@ -44,6 +47,9 @@ public class GetUserHandler(
             user.BirthDate = staff.BirthDate;
             user.Patronymic = staff.Patronymic;
             user.Phone = staff.Phone;
+            
+            if(staff.AvatarId != null)
+                user.AvatarId = staff.AvatarId.Value;
         }
         
         return MbResult<GetUserResponse>.Success(user);

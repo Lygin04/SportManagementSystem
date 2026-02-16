@@ -1,4 +1,5 @@
 using SportManagementSystem.Modules.Clients.Domain.Entities;
+using SportManagementSystem.Modules.Images.Domain.Entities;
 
 namespace SportManagementSystem.Modules.Users.Domain.Entities;
 
@@ -44,6 +45,8 @@ public class DbClient
     /// </summary>
     public DateTime? Modified { get; set; }
     
+    public Guid? AvatarId { get; set; }
+    public DbImage? Avatar { get; set; }
 
     public ICollection<DbBooking> Bookings { get; set; }
     public ICollection<DbMembership> Memberships { get; set; }

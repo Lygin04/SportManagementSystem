@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Http;
-
 namespace SportManagementSystem.Modules.Images.Contracts.Requests;
 
 public class UploadImageRequest

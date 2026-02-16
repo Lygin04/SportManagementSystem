@@ -79,7 +79,7 @@ public class UploadImageHandler(
             await using var transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
             await imageRepository.CreateAsync(image, cancellationToken);
             await transaction.CommitAsync(cancellationToken);
-
+            
             return MbResult<Guid>.Success(id);
         }
         catch (MinioException ex)

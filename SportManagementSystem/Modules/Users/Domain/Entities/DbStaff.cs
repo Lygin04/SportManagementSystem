@@ -1,4 +1,5 @@
 using SportManagementSystem.Modules.Assets.Domain.Entities;
+using SportManagementSystem.Modules.Images.Domain.Entities;
 
 namespace SportManagementSystem.Modules.Users.Domain.Entities;
 
@@ -37,6 +38,9 @@ public class DbStaff
     /// </summary>
     public DateOnly BirthDate { get; set; }
     
-    public int? BranchId { get; set; }
-    public DbBranch? Branch { get; set; }
+    public int BranchId { get; set; }
+    public DbBranch Branch { get; set; }
+    
+    public Guid? AvatarId { get; set; }
+    public DbImage? Avatar { get; set; }
 }

@@ -1,5 +1,5 @@
 using Hangfire;
-using SportManagementSystem.Infrastructure.Hangfire;
+using SportManagementSystem.BuildingBlocks.Hangfire;
 using SportManagementSystem.Modules.Scheduling.Application.Dispatchers;
 using SportManagementSystem.Modules.Users.Domain.Services;
 using SportManagementSystem.Modules.Users.Infrastructure.Services;

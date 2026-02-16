@@ -31,4 +31,14 @@ public class StaffRepository(ApplicationDbContext db) : IStaffRepository
     {
         return await db.Staffs.AnyAsync(staff => staff.Id == id, ct);
     }
+
+    public async Task<bool> SetImageIdAsync(long staffId, Guid? imageId, CancellationToken ct)
+    {
+        var updatedRows = await db.Staffs
+            .Where(c => c.Id == staffId)
+            .ExecuteUpdateAsync(setters => setters
+                .SetProperty(c => c.AvatarId, imageId), ct);
+
+        return updatedRows > 0;
+    }
 }

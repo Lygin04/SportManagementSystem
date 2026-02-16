@@ -1,5 +1,4 @@
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportManagementSystem.BuildingBlocks.Abstractions;
 using SportManagementSystem.Modules.Images.Application.Commands.DeleteImage;

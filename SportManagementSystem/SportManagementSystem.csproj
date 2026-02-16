@@ -39,6 +39,12 @@
 
     <ItemGroup>
       <Folder Include="Migrations\" />
+      <Folder Include="Modules\Assets\Application\Commands\DeleteImageBranch\" />
+      <Folder Include="Modules\Assets\Application\Commands\DeleteImageEquipment\" />
+      <Folder Include="Modules\Assets\Application\Commands\DeleteImageRoom\" />
+      <Folder Include="Modules\Assets\Application\Commands\UploadImageBranch\" />
+      <Folder Include="Modules\Assets\Application\Commands\UploadImageEquipment\" />
+      <Folder Include="Modules\Assets\Application\Commands\UploadImageRoom\" />
       <Folder Include="Modules\Users\Domain\Events\" />
     </ItemGroup>
 

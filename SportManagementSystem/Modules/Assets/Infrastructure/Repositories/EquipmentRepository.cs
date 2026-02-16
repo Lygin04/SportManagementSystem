@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using SportManagementSystem.Data;
 using SportManagementSystem.Modules.Assets.Domain.Entities;
 using SportManagementSystem.Modules.Assets.Domain.Repositories;
+using SportManagementSystem.Modules.Images.Domain.Entities;
 
 namespace SportManagementSystem.Modules.Assets.Infrastructure.Repositories;
 
@@ -24,7 +25,22 @@ public class EquipmentRepository(ApplicationDbContext db) : IEquipmentRepository
 
     public async Task<DbEquipment?> GetByIdAsync(long id, CancellationToken ct)
     {
-        return await db.Equipments.FindAsync(id, ct);
+        return await db.Equipments
+            .Include(e => e.Images)
+            .FirstOrDefaultAsync(e => e.Id == id, ct);
+    }
+
+    public async Task AddImage(DbEquipment equipment, Guid imageId)
+    {
+        var trackedImage = db.Images.Local.FirstOrDefault(i => i.Id == imageId);
+        if (trackedImage is null)
+        {
+            trackedImage = new DbImage { Id = imageId };
+            db.Images.Attach(trackedImage);
+        }
+
+        equipment.Images.Add(trackedImage);
+        await db.SaveChangesAsync();
     }
 
     public async Task<bool> ExistsAsync(long id, CancellationToken ct)

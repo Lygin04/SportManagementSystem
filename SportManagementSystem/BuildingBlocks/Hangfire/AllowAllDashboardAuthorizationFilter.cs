@@ -1,6 +1,6 @@
 using Hangfire.Dashboard;
 
-namespace SportManagementSystem.Infrastructure.Hangfire;
+namespace SportManagementSystem.BuildingBlocks.Hangfire;
 
 public sealed class AllowAllDashboardAuthorizationFilter : IDashboardAuthorizationFilter
 {

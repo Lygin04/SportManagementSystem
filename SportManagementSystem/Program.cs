@@ -55,7 +55,7 @@ app.MapHangfireDashboardWithAuth();
 RecurringJob.AddOrUpdate<TrainingSessionStatusDispatcher>(
     "training-session-status-dispatcher",
     dispatcher => dispatcher.DispatchAsync(),
-    "*/5 * * * * *");
+    "*/5 * * * *");
 
 app.UseAuthorization();
 app.UseMiddleware<ExceptionHandlingMiddleware>();

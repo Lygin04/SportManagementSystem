@@ -73,16 +73,3 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
-
-  minio-init:
-    image: minio/minio:RELEASE.2025-09-07T16-13-09Z-cpuv1
-    depends_on:
-      minio:
-        condition: service_healthy
-    networks:
-      - backend
-    volumes:
-      - ./minio/init.sh:/docker-entrypoint-init.d/init.sh:ro
-    entrypoint:
-      - /bin/sh
-      - /docker-entrypoint-init.d/init.sh

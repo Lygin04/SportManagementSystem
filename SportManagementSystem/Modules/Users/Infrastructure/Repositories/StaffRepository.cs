@@ -39,6 +39,8 @@ public class StaffRepository(ApplicationDbContext db) : IStaffRepository
             .ExecuteUpdateAsync(setters => setters
                 .SetProperty(c => c.AvatarId, imageId), ct);
 
+        db.ChangeTracker.Clear();
+
         return updatedRows > 0;
     }
 }

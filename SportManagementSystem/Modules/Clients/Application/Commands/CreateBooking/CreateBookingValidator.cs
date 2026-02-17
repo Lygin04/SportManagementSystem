@@ -16,6 +16,6 @@ public class CreateBookingValidator : AbstractValidator<CreateBookingMessage>
 
         RuleFor(x => x.Request.Booked)
             .NotEmpty()
-            .Must(x => x > DateTime.Now);
+            .Must(x => x > DateTime.UtcNow);
     }
 }

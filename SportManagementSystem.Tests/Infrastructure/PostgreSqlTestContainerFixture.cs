@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using SportManagementSystem.Data;
 using Testcontainers.PostgreSql;
 
-namespace SportManagementSystem.Tests.Integration;
+namespace SportManagementSystem.Tests.Infrastructure;
 
 public sealed class PostgreSqlTestContainerFixture : IAsyncLifetime
 {

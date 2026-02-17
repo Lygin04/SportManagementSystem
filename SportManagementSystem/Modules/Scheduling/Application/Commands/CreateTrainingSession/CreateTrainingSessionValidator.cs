@@ -19,10 +19,10 @@ public class CreateTrainingSessionValidator : AbstractValidator<CreateTrainingSe
         
         RuleFor(x => x.Request.StartedDate)
             .NotEmpty()
-            .GreaterThan(DateTime.Now);
+            .GreaterThan(DateTime.UtcNow);
         
         RuleFor(x => x.Request.EndedDate)
             .NotEmpty()
-            .GreaterThan(DateTime.Now);
+            .GreaterThan(DateTime.UtcNow);
     }
 }

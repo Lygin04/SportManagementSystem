@@ -1,4 +1,4 @@
-namespace SportManagementSystem.Tests.Integration;
+namespace SportManagementSystem.Tests.Infrastructure;
 
 [CollectionDefinition(Name)]
 public sealed class PostgreSqlCollection : ICollectionFixture<PostgreSqlTestContainerFixture>

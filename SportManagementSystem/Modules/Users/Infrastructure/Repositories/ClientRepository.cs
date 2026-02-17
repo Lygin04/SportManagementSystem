@@ -39,6 +39,8 @@ public class ClientRepository(ApplicationDbContext db) : IClientRepository
             .ExecuteUpdateAsync(setters => setters
                 .SetProperty(c => c.AvatarId, imageId), ct);
 
+        db.ChangeTracker.Clear();
+
         return updatedRows > 0;
     }
 }

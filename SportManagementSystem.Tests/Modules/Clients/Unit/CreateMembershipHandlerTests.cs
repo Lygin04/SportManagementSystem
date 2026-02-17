@@ -8,7 +8,7 @@ using SportManagementSystem.Modules.Clients.Domain.Repositories;
 using SportManagementSystem.Modules.Services.Domain.Repositories;
 using SportManagementSystem.Modules.Users.Domain.Repositories;
 
-namespace SportManagementSystem.Tests.BusinessLogic;
+namespace SportManagementSystem.Tests.Modules.Clients.Unit;
 
 public class CreateMembershipHandlerTests
 {

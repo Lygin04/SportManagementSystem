@@ -11,7 +11,7 @@ using SportManagementSystem.Modules.Users.Domain.Enums;
 using SportManagementSystem.Modules.Users.Domain.Repositories;
 using SportManagementSystem.Modules.Users.Domain.Services;
 
-namespace SportManagementSystem.Tests.BusinessLogic;
+namespace SportManagementSystem.Tests.Modules.Users.Unit;
 
 public class UsersHandlersTests
 {

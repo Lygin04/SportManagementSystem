@@ -38,7 +38,7 @@ public class DbStaff
     /// </summary>
     public DateOnly BirthDate { get; set; }
     
-    public int BranchId { get; set; }
+    public long BranchId { get; set; }
     public DbBranch Branch { get; set; }
     
     public Guid? AvatarId { get; set; }

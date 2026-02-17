@@ -35,8 +35,13 @@ public class TrainingSessionRepository(ApplicationDbContext db) : ITrainingSessi
 
     public async Task<int> MarkDoneAsync(CancellationToken ct)
     {
-        return await db.TrainingSessions
+        var updatedCount = await db.TrainingSessions
             .Where(x => x.EndedDate < DateTime.UtcNow && x.Status == ESessionStatus.Planned)
             .ExecuteUpdateAsync(update => update.SetProperty(x => x.Status, ESessionStatus.Done), ct);
+
+        // ExecuteUpdate bypasses tracked entities; clear tracker so subsequent reads return fresh DB state.
+        db.ChangeTracker.Clear();
+
+        return updatedCount;
     }
 }

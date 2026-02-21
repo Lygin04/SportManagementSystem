@@ -7,7 +7,6 @@ using SportManagementSystem.Modules.Scheduling.Domain.Enums;
 using SportManagementSystem.Modules.Services.Domain.Entities;
 using SportManagementSystem.Modules.Services.Domain.Enums;
 using SportManagementSystem.Modules.Users.Domain.Entities;
-using SportManagementSystem.Modules.Users.Domain.Enums;
 using SportManagementSystem.Tests.Infrastructure;
 
 namespace SportManagementSystem.Tests.Modules.Clients.Integration;

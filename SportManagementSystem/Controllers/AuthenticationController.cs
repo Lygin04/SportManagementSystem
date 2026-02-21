@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportManagementSystem.BuildingBlocks.Abstractions;
 using SportManagementSystem.Modules.Users.Application.Commands.LoginUser;
+using SportManagementSystem.Modules.Users.Application.Commands.RegisterAdmin;
 using SportManagementSystem.Modules.Users.Application.Commands.RegisterClient;
 using SportManagementSystem.Modules.Users.Application.Commands.RegisterStaff;
 using SportManagementSystem.Modules.Users.Contracts.Requests;
@@ -19,6 +20,18 @@ public class AuthenticationController(IMediator mediator) : ApiControllerV1
     {
         var result = await mediator.Send(new RegisterClientMessage(request), ct);
         
+        return result.IsSuccess
+            ? Created("", new { result.IsSuccess, result.Data, result.Error })
+            : ToActionResult(result);
+    }
+
+    /// <summary>
+    /// Регистрация администратора филиалов.
+    /// </summary>
+    [HttpPost("register-admin")]
+    public async Task<IActionResult> RegisterAdmin(RegisterAdminRequest request, CancellationToken ct)
+    {
+        var result = await mediator.Send(new RegisterAdminMessage(request), ct);
         return result.IsSuccess
             ? Created("", new { result.IsSuccess, result.Data, result.Error })
             : ToActionResult(result);

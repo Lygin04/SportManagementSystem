@@ -18,6 +18,11 @@ public static class JwtReader
         return ParseToken(token, "id");
     }
 
+    public static string? GetAccountId(string token)
+    {
+        return ParseToken(token, "account_id");
+    }
+
     /// <summary>
     /// Получает электронную почту пользователя из JWT токена.
     /// </summary>

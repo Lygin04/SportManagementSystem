@@ -5,5 +5,7 @@ namespace SportManagementSystem.Modules.Assets.Domain.Repositories;
 
 public interface IBranchRepository : IBaseRepository<DbBranch>, IExistsByIdRepository<DbBranch>, IGetAllRepository<DbBranch>
 {
-    Task AddImage(DbBranch branch, Guid imageId);
+    Task AddImage(DbBranch branch, Guid imageId, CancellationToken ct);
+    Task<List<DbBranch>> GetByAdmin(long adminId, CancellationToken ct);
+    Task<bool> AddStaffMemberAsync(long branchId, long staffId, bool asAdmin, CancellationToken ct);
 }

@@ -1,4 +1,5 @@
 using SportManagementSystem.Modules.Services.Domain.Enums;
+using SportManagementSystem.Modules.Assets.Domain.Entities;
 
 namespace SportManagementSystem.Modules.Services.Domain.Entities;
 
@@ -43,6 +44,9 @@ public class DbSportService
     /// Дата и время последнего изменения данных.
     /// </summary>
     public DateTime? Modified { get; set; }
+
+    public long BranchId { get; set; }
+    public DbBranch Branch { get; set; } = null!;
     
-    public ICollection<DbServicePrice> Prices { get; set; }
+    public ICollection<DbServicePrice> Prices { get; set; } = new List<DbServicePrice>();
 }

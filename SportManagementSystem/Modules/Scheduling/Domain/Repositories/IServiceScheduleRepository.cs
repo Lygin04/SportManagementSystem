@@ -7,5 +7,5 @@ public interface IServiceScheduleRepository :
     IBaseRepository<DbServiceSchedule>,
     IExistsByIdRepository<DbServiceSchedule>
 {
-
+    Task<List<DbServiceSchedule>> GetByBranchIdAsync(long branchId, CancellationToken ct);
 }

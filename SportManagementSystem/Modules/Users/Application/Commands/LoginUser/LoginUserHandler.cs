@@ -23,7 +23,7 @@ public class LoginUserHandler(
             return MbResult<LoginUserResponse>.Failure(new MbError(
                 title: "Invalid credentials",
                 status: StatusCodes.Status401Unauthorized,
-                detail: "Неверная почта или пароль."));;
+                detail: "Неверная почта или пароль."));
         }
 
         if (candidate.Status != EAccountStatus.Active)
@@ -37,11 +37,16 @@ public class LoginUserHandler(
         candidate.LastLogin = DateTime.UtcNow;
         await userAccountRepository.UpdateLastLoginDateAsync(candidate.Id, cancellationToken);
 
+        var userId = candidate.Role == EUserRole.Client
+            ? candidate.ClientId!.Value
+            : candidate.StaffId!.Value;
+        
         var response = await jwtService.CreateAccessTokenAsync(new List<Claim>
         {
-            new("email", request.Request.Email),
+            new("email", candidate.Email),
             new("role", candidate.Role.ToString()),
-            new("id", candidate.Id.ToString())
+            new("id", userId.ToString()),
+            new ("account_id", candidate.Id.ToString()),
         });
 
         return MbResult<LoginUserResponse>.Success(response);

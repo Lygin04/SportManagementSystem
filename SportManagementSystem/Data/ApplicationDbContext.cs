@@ -50,6 +50,60 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         modelBuilder.Entity<DbUserAccount>()
             .HasIndex(x => x.Email)
             .IsUnique();
+
+        modelBuilder.Entity<DbBranch>()
+            .HasOne(x => x.Admin)
+            .WithMany(x => x.CreatedBranches)
+            .HasForeignKey(x => x.AdminId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<DbBranch>()
+            .HasMany(x => x.BranchAdmins)
+            .WithMany(x => x.AdminBranches)
+            .UsingEntity<Dictionary<string, object>>(
+                "BranchAdmins",
+                right => right
+                    .HasOne<DbStaff>()
+                    .WithMany()
+                    .HasForeignKey("StaffId")
+                    .OnDelete(DeleteBehavior.Cascade),
+                left => left
+                    .HasOne<DbBranch>()
+                    .WithMany()
+                    .HasForeignKey("BranchId")
+                    .OnDelete(DeleteBehavior.Cascade),
+                join =>
+                {
+                    join.HasKey("BranchId", "StaffId");
+                    join.ToTable("BranchAdmins");
+                });
+
+        modelBuilder.Entity<DbBranch>()
+            .HasMany(x => x.BranchStaffs)
+            .WithMany(x => x.StaffBranches)
+            .UsingEntity<Dictionary<string, object>>(
+                "BranchStaffs",
+                right => right
+                    .HasOne<DbStaff>()
+                    .WithMany()
+                    .HasForeignKey("StaffId")
+                    .OnDelete(DeleteBehavior.Cascade),
+                left => left
+                    .HasOne<DbBranch>()
+                    .WithMany()
+                    .HasForeignKey("BranchId")
+                    .OnDelete(DeleteBehavior.Cascade),
+                join =>
+                {
+                    join.HasKey("BranchId", "StaffId");
+                    join.ToTable("BranchStaffs");
+                });
+
+        modelBuilder.Entity<DbSportService>()
+            .HasOne(x => x.Branch)
+            .WithMany(x => x.SportServices)
+            .HasForeignKey(x => x.BranchId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
     
     public void BeginTransaction()

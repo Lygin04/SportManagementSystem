@@ -38,8 +38,14 @@ public class DbStaff
     /// </summary>
     public DateOnly BirthDate { get; set; }
     
-    public long BranchId { get; set; }
-    public DbBranch Branch { get; set; }
+    // Branches where this employee is assigned as administrator.
+    public ICollection<DbBranch> AdminBranches { get; set; } = new List<DbBranch>();
+
+    // Branches where this employee works as staff.
+    public ICollection<DbBranch> StaffBranches { get; set; } = new List<DbBranch>();
+
+    // Branches created by this employee as the main administrator.
+    public ICollection<DbBranch> CreatedBranches { get; set; } = new List<DbBranch>();
     
     public Guid? AvatarId { get; set; }
     public DbImage? Avatar { get; set; }

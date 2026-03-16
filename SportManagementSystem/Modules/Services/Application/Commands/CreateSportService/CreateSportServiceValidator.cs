@@ -6,6 +6,9 @@ public class CreateSportServiceValidator : AbstractValidator<CreateSportServiceM
 {
     public CreateSportServiceValidator()
     {
+        RuleFor(x => x.Request.BranchId)
+            .GreaterThan(0);
+
         RuleFor(x => x.Request.Name)
             .NotEmpty();
         

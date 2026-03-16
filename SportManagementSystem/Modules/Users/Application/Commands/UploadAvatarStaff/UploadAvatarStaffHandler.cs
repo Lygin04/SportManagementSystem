@@ -29,7 +29,7 @@ public class UploadAvatarStaffHandler(
         
         var imageId = await mediator.Send(new UploadImageMessage(request.Request), cancellationToken);
         staff.AvatarId = imageId.Data;
-        
+
         await staffRepository.SetImageIdAsync(request.UserId, staff.AvatarId, cancellationToken);
         
         return MbResult<Unit>.Success(Unit.Value);

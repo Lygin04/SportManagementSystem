@@ -10,6 +10,12 @@ public class BranchRepository(ApplicationDbContext db) : IBranchRepository
 {
     public async Task<DbBranch> CreateAsync(DbBranch entity, CancellationToken ct)
     {
+        var creator = await db.Staffs.FirstOrDefaultAsync(s => s.Id == entity.AdminId, ct);
+        if (creator is not null)
+        {
+            entity.BranchAdmins.Add(creator);
+        }
+
         var branch = await db.Branches.AddAsync(entity, ct);
         await db.SaveChangesAsync(ct);
         return branch.Entity;
@@ -39,7 +45,7 @@ public class BranchRepository(ApplicationDbContext db) : IBranchRepository
             .ToListAsync(ct);
     }
 
-    public async Task AddImage(DbBranch branch, Guid imageId)
+    public async Task AddImage(DbBranch branch, Guid imageId, CancellationToken ct)
     {
         var trackedImage = db.Images.Local.FirstOrDefault(i => i.Id == imageId);
         if (trackedImage is null)
@@ -49,11 +55,53 @@ public class BranchRepository(ApplicationDbContext db) : IBranchRepository
         }
 
         branch.Images.Add(trackedImage);
-        await db.SaveChangesAsync();
+        await db.SaveChangesAsync(ct);
+    }
+
+    public async Task<List<DbBranch>> GetByAdmin(long adminId, CancellationToken ct)
+    {
+        return await db.Branches
+            .Where(s => s.AdminId == adminId)
+            .Include(b => b.Images)
+            .Include(r => r.Rooms)
+            .ToListAsync(ct);
     }
 
     public async Task<bool> ExistsAsync(long id, CancellationToken ct)
     {
         return db.Branches.Any(e => e.Id == id);
+    }
+
+    public async Task<bool> AddStaffMemberAsync(long branchId, long staffId, bool asAdmin, CancellationToken ct)
+    {
+        var branch = await db.Branches
+            .Include(b => b.BranchAdmins)
+            .Include(b => b.BranchStaffs)
+            .FirstOrDefaultAsync(b => b.Id == branchId, ct);
+        if (branch is null)
+        {
+            return false;
+        }
+
+        var staff = await db.Staffs.FirstOrDefaultAsync(s => s.Id == staffId, ct);
+        if (staff is null)
+        {
+            return false;
+        }
+
+        if (asAdmin)
+        {
+            if (!branch.BranchAdmins.Any(member => member.Id == staffId))
+            {
+                branch.BranchAdmins.Add(staff);
+            }
+        }
+        else if (!branch.BranchStaffs.Any(member => member.Id == staffId))
+        {
+            branch.BranchStaffs.Add(staff);
+        }
+
+        await db.SaveChangesAsync(ct);
+        return true;
     }
 }

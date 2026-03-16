@@ -4,6 +4,8 @@ namespace SportManagementSystem.Modules.Services.Contracts.Requests;
 
 public class CreateSportServiceRequest
 {
+    public long BranchId { get; set; }
+
     // <summary>
     /// Название услуги.
     /// </summary>

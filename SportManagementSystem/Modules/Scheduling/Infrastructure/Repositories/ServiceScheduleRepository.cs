@@ -27,6 +27,19 @@ public class ServiceScheduleRepository(ApplicationDbContext db) : IServiceSchedu
         return await db.ServiceSchedules.FindAsync(id, ct);
     }
 
+    public async Task<List<DbServiceSchedule>> GetByBranchIdAsync(long branchId, CancellationToken ct)
+    {
+        return await db.ServiceSchedules
+            .AsNoTracking()
+            .Include(schedule => schedule.SportService)
+            .Include(schedule => schedule.Room)
+            .Include(schedule => schedule.Staff)
+            .Where(schedule => schedule.SportService.BranchId == branchId)
+            .OrderBy(schedule => schedule.DayOfWeek)
+            .ThenBy(schedule => schedule.StartTime)
+            .ToListAsync(ct);
+    }
+
     public async Task<bool> ExistsAsync(long id, CancellationToken ct)
     {
         return await db.ServiceSchedules.AnyAsync(c => c.Id == id, ct);

@@ -30,7 +30,7 @@ public class UploadImageBranchHandler(
                 detail: "Image upload failed."));
         }
 
-        await branchRepository.AddImage(branch, uploadResult.Data);
+        await branchRepository.AddImage(branch, uploadResult.Data, cancellationToken);
         return MbResult<Unit>.Success(Unit.Value);
     }
 }

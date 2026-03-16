@@ -20,6 +20,8 @@ public class BaseAuthController : ControllerBase
     /// </summary>
     private string AuthHeader => HttpContext.Request.Headers.Authorization.ToString();
     
+    protected long AccountId => long.Parse(JwtReader.GetAccountId(AuthHeader));
+    
     /// <summary>
     /// Получает идентификатор пользователя из JWT.
     /// </summary>

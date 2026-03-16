@@ -40,7 +40,7 @@ public class RegisterAdminHandler(
             PasswordHash = passwordHasher.Hash(request.Request.Password),
             Role = EUserRole.Admin,
             Status = EAccountStatus.Active,
-            ClientId = staff.Id,
+            StaffId = staff.Id,
             Created = DateTime.UtcNow,
         };
 

@@ -40,7 +40,7 @@ public class RegisterStaffHandler(
             PasswordHash = passwordHasher.Hash(request.Request.Password),
             Role = request.Request.Role,
             Status = EAccountStatus.Active,
-            ClientId = staff.Id,
+            StaffId = staff.Id,
             Created = DateTime.UtcNow,
         };
 

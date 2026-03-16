@@ -1,25 +1,40 @@
 using SportManagementSystem.BuildingBlocks;
 using SportManagementSystem.BuildingBlocks.Abstractions;
-using SportManagementSystem.Modules.Users.Domain.Entities;
+using SportManagementSystem.Modules.Users.Contracts.Response;
 using SportManagementSystem.Modules.Users.Domain.Repositories;
 
 namespace SportManagementSystem.Modules.Users.Application.Queries.GetStaff;
 
 public class GetStaffHandler(
-    IStaffRepository staffRepository) : IMessageHandler<GetStaffMessage, MbResult<DbStaff>>
+    IUserAccountRepository userAccountRepository,
+    IStaffRepository staffRepository) : IMessageHandler<GetStaffMessage, MbResult<GetUserResponse>>
 {
-    public async Task<MbResult<DbStaff>> Handle(GetStaffMessage request, CancellationToken cancellationToken)
+    public async Task<MbResult<GetUserResponse>> Handle(GetStaffMessage request, CancellationToken cancellationToken)
     {
-        var staff = await staffRepository.GetByIdAsync(request.Id, cancellationToken);
-
-        if (staff == null)
+        var userAccount = await userAccountRepository.GetByIdAsync(request.Id, cancellationToken);
+        if (userAccount == null)
         {
-            return MbResult<DbStaff>.Failure(new MbError(
-                title: "Staff not found",
+            return MbResult<GetUserResponse>.Failure(new MbError(
+                title: "User not found",
                 status: StatusCodes.Status404NotFound,
-                detail: "Сотрудник не найден"));
+                detail: "Пользователя не существует"));
         }
-        
-        return MbResult<DbStaff>.Success(staff);
+
+        var user = new GetUserResponse
+        {
+            Email = userAccount.Email
+        };
+
+        var staff = await staffRepository.GetByIdAsync(userAccount.StaffId!.Value, cancellationToken);
+        user.FirstName = staff!.FirstName;
+        user.LastName = staff.LastName;
+        user.BirthDate = staff.BirthDate;
+        user.Patronymic = staff.Patronymic;
+        user.Phone = staff.Phone;
+
+        if (staff.AvatarId != null)
+            user.AvatarId = staff.AvatarId.Value;
+
+        return MbResult<GetUserResponse>.Success(user);
     }
-}
+}   

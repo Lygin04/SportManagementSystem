@@ -29,6 +29,7 @@ public class UploadAvatarClientHandler(
         
         var imageId = await mediator.Send(new UploadImageMessage(request.Request), cancellationToken);
         client.AvatarId = imageId.Data;
+        client.Modified = DateTime.UtcNow;
         
         await clientRepository.SetImageIdAsync(request.UserId, client.AvatarId, cancellationToken);
         

@@ -32,6 +32,36 @@ namespace SportManagementSystem.Migrations
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "e_user_role", new[] { "admin", "manager", "trainer", "cashier", "client" });
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("BranchAdmins", b =>
+                {
+                    b.Property<long>("BranchId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("StaffId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("BranchId", "StaffId");
+
+                    b.HasIndex("StaffId");
+
+                    b.ToTable("BranchAdmins", (string)null);
+                });
+
+            modelBuilder.Entity("BranchStaffs", b =>
+                {
+                    b.Property<long>("BranchId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("StaffId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("BranchId", "StaffId");
+
+                    b.HasIndex("StaffId");
+
+                    b.ToTable("BranchStaffs", (string)null);
+                });
+
             modelBuilder.Entity("SportManagementSystem.Modules.Assets.Domain.Entities.DbBranch", b =>
                 {
                     b.Property<long>("Id")
@@ -42,6 +72,9 @@ namespace SportManagementSystem.Migrations
 
                     b.Property<string>("Address")
                         .HasColumnType("text");
+
+                    b.Property<long>("AdminId")
+                        .HasColumnType("bigint");
 
                     b.Property<double?>("Latitude")
                         .HasColumnType("double precision");
@@ -54,6 +87,8 @@ namespace SportManagementSystem.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AdminId");
 
                     b.ToTable("Branches");
                 });
@@ -347,6 +382,9 @@ namespace SportManagementSystem.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<long>("BranchId")
+                        .HasColumnType("bigint");
+
                     b.Property<int?>("Category")
                         .HasColumnType("integer");
 
@@ -371,6 +409,8 @@ namespace SportManagementSystem.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BranchId");
 
                     b.HasIndex("Code")
                         .IsUnique();
@@ -434,9 +474,6 @@ namespace SportManagementSystem.Migrations
                     b.Property<DateOnly>("BirthDate")
                         .HasColumnType("date");
 
-                    b.Property<long>("BranchId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -455,8 +492,6 @@ namespace SportManagementSystem.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AvatarId");
-
-                    b.HasIndex("BranchId");
 
                     b.ToTable("Staffs");
                 });
@@ -508,6 +543,47 @@ namespace SportManagementSystem.Migrations
                     b.HasIndex("StaffId");
 
                     b.ToTable("UserAccounts");
+                });
+
+            modelBuilder.Entity("BranchAdmins", b =>
+                {
+                    b.HasOne("SportManagementSystem.Modules.Assets.Domain.Entities.DbBranch", null)
+                        .WithMany()
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SportManagementSystem.Modules.Users.Domain.Entities.DbStaff", null)
+                        .WithMany()
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BranchStaffs", b =>
+                {
+                    b.HasOne("SportManagementSystem.Modules.Assets.Domain.Entities.DbBranch", null)
+                        .WithMany()
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SportManagementSystem.Modules.Users.Domain.Entities.DbStaff", null)
+                        .WithMany()
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SportManagementSystem.Modules.Assets.Domain.Entities.DbBranch", b =>
+                {
+                    b.HasOne("SportManagementSystem.Modules.Users.Domain.Entities.DbStaff", "Admin")
+                        .WithMany("CreatedBranches")
+                        .HasForeignKey("AdminId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Admin");
                 });
 
             modelBuilder.Entity("SportManagementSystem.Modules.Assets.Domain.Entities.DbEquipment", b =>
@@ -642,6 +718,17 @@ namespace SportManagementSystem.Migrations
                     b.Navigation("SportService");
                 });
 
+            modelBuilder.Entity("SportManagementSystem.Modules.Services.Domain.Entities.DbSportService", b =>
+                {
+                    b.HasOne("SportManagementSystem.Modules.Assets.Domain.Entities.DbBranch", "Branch")
+                        .WithMany("SportServices")
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
+                });
+
             modelBuilder.Entity("SportManagementSystem.Modules.Users.Domain.Entities.DbClient", b =>
                 {
                     b.HasOne("SportManagementSystem.Modules.Images.Domain.Entities.DbImage", "Avatar")
@@ -657,15 +744,7 @@ namespace SportManagementSystem.Migrations
                         .WithMany()
                         .HasForeignKey("AvatarId");
 
-                    b.HasOne("SportManagementSystem.Modules.Assets.Domain.Entities.DbBranch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Avatar");
-
-                    b.Navigation("Branch");
                 });
 
             modelBuilder.Entity("SportManagementSystem.Modules.Users.Domain.Entities.DbUserAccount", b =>
@@ -688,6 +767,8 @@ namespace SportManagementSystem.Migrations
                     b.Navigation("Images");
 
                     b.Navigation("Rooms");
+
+                    b.Navigation("SportServices");
                 });
 
             modelBuilder.Entity("SportManagementSystem.Modules.Assets.Domain.Entities.DbEquipment", b =>
@@ -712,6 +793,11 @@ namespace SportManagementSystem.Migrations
                     b.Navigation("Bookings");
 
                     b.Navigation("Memberships");
+                });
+
+            modelBuilder.Entity("SportManagementSystem.Modules.Users.Domain.Entities.DbStaff", b =>
+                {
+                    b.Navigation("CreatedBranches");
                 });
 #pragma warning restore 612, 618
         }

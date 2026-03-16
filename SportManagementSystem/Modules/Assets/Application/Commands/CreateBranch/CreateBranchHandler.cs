@@ -11,6 +11,7 @@ public class CreateBranchHandler(IBranchRepository branchRepository) : IMessageH
     {
         var branch = new DbBranch
         {
+            AdminId = request.AdminId,
             Name = request.Request.Name,
             Address = request.Request.Address,
             Latitude = request.Request.Latitude,

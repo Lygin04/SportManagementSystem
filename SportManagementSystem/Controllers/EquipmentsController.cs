@@ -6,6 +6,7 @@ using SportManagementSystem.Modules.Assets.Application.Commands.CreateEquipment;
 using SportManagementSystem.Modules.Assets.Application.Commands.DeleteImageEquipment;
 using SportManagementSystem.Modules.Assets.Application.Commands.UploadImageEquipment;
 using SportManagementSystem.Modules.Assets.Application.Queries.GetEquipment;
+using SportManagementSystem.Modules.Assets.Application.Queries.GetEquipmentByRoom;
 using SportManagementSystem.Modules.Assets.Contracts.Request;
 using SportManagementSystem.Modules.Images.Contracts.Requests;
 
@@ -33,6 +34,16 @@ public class EquipmentsController(IMediator mediator) : ApiControllerV1WithAuth
     public async Task<IActionResult> GetById(long id, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(new GetEquipmentMessage(id), cancellationToken);
+        return ToActionResult(result);
+    }
+
+    /// <summary>
+    /// Получить оборудование по помещению.
+    /// </summary>
+    [HttpGet("room/{roomId:long}")]
+    public async Task<IActionResult> GetByRoom(long roomId, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(new GetEquipmentByRoomMessage(roomId), cancellationToken);
         return ToActionResult(result);
     }
 

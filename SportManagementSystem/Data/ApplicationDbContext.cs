@@ -25,6 +25,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<DbTrainingSession> TrainingSessions => Set<DbTrainingSession>();
     public DbSet<DbBooking> Bookings => Set<DbBooking>();
     public DbSet<DbMembership> Memberships => Set<DbMembership>();
+    public DbSet<DbMembershipTemplate> MembershipTemplates => Set<DbMembershipTemplate>();
     public DbSet<DbBranch> Branches => Set<DbBranch>();
     public DbSet<DbRoom> Rooms => Set<DbRoom>();
     public DbSet<DbEquipment> Equipments => Set<DbEquipment>();
@@ -104,6 +105,30 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .WithMany(x => x.SportServices)
             .HasForeignKey(x => x.BranchId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<DbMembershipTemplate>()
+            .HasOne(x => x.Branch)
+            .WithMany()
+            .HasForeignKey(x => x.BranchId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<DbMembershipTemplate>()
+            .HasOne(x => x.SportService)
+            .WithMany()
+            .HasForeignKey(x => x.SportServiceId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<DbMembershipTemplate>()
+            .HasOne(x => x.ServicePrice)
+            .WithMany()
+            .HasForeignKey(x => x.ServicePriceId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<DbMembership>()
+            .HasOne(x => x.MembershipTemplate)
+            .WithMany(x => x.Memberships)
+            .HasForeignKey(x => x.MembershipTemplateId)
+            .OnDelete(DeleteBehavior.SetNull);
     }
     
     public void BeginTransaction()

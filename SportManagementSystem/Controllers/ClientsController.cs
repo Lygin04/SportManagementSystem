@@ -5,6 +5,7 @@ using SportManagementSystem.BuildingBlocks.Abstractions;
 using SportManagementSystem.Modules.Images.Contracts.Requests;
 using SportManagementSystem.Modules.Users.Application.Commands.UploadAvatarClient;
 using SportManagementSystem.Modules.Users.Application.Queries.GetClient;
+using SportManagementSystem.Modules.Users.Application.Queries.GetClientLookup;
 
 namespace SportManagementSystem.Controllers;
 
@@ -19,6 +20,14 @@ public class ClientsController(IMediator mediator) : ApiControllerV1WithAuth
     public async Task<IActionResult> GetById(long id, CancellationToken ct)
     {
         var result = await mediator.Send(new GetClientMessage(id), ct);
+        return ToActionResult(result);
+    }
+
+    [Authorize(Roles = "Admin, Manager")]
+    [HttpGet("lookup/{clientId:long}")]
+    public async Task<IActionResult> GetByClientId(long clientId, CancellationToken ct)
+    {
+        var result = await mediator.Send(new GetClientLookupMessage(clientId), ct);
         return ToActionResult(result);
     }
 

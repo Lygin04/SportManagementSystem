@@ -14,11 +14,11 @@ public class ServicePricesController(IMediator mediator) : ApiControllerV1WithAu
     /// <summary>
     /// Создать цену на услугу.
     /// </summary>
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Manager")]
     [HttpPost]
     public async Task<IActionResult> Create(CreateServicePriceRequest request, CancellationToken ct)
     {
-        var result = await mediator.Send(new CreateServicePriceMessage(request), ct);
+        var result = await mediator.Send(new CreateServicePriceMessage(UserId, Role, request), ct);
         return result.IsSuccess
             ? Created(nameof(GetById), new { Id = result.Data})
             : ToActionResult(result);

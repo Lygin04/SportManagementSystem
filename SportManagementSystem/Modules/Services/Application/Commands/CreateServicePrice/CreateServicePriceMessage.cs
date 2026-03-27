@@ -4,4 +4,4 @@ using SportManagementSystem.Modules.Services.Contracts.Requests;
 
 namespace SportManagementSystem.Modules.Services.Application.Commands.CreateServicePrice;
 
-public record CreateServicePriceMessage(CreateServicePriceRequest Request) : IMessage<MbResult<long>>;
+public record CreateServicePriceMessage(long UserId, string Role, CreateServicePriceRequest Request) : IMessage<MbResult<long>>;

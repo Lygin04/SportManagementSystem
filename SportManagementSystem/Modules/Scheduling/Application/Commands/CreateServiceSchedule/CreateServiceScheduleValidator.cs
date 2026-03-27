@@ -11,7 +11,8 @@ public class CreateServiceScheduleValidator : AbstractValidator<CreateServiceSch
             .GreaterThan(0);
         
         RuleFor(x => x.Request.StaffId)
-            .GreaterThan(0);
+            .GreaterThan(0)
+            .When(x => x.Request.StaffId.HasValue);
         
         RuleFor(x => x.Request.RoomId)
             .NotEmpty()

@@ -2,6 +2,9 @@
 
 public class CreateMembershipRequest
 {
+    public long? ClientId { get; set; }
+    public long? MembershipTemplateId { get; set; }
+
     public long SportServiceId { get; set; }
     
     /// <summary>

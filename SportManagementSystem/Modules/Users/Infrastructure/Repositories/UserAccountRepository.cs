@@ -32,6 +32,11 @@ public class UserAccountRepository(ApplicationDbContext db) : IUserAccountReposi
         return await db.UserAccounts.FirstOrDefaultAsync(x => x.Email == email, ct);
     }
 
+    public async Task<DbUserAccount?> GetByClientIdAsync(long clientId, CancellationToken ct)
+    {
+        return await db.UserAccounts.FirstOrDefaultAsync(x => x.ClientId == clientId, ct);
+    }
+
     public async Task<bool> ExistsEmailAsync(string email, CancellationToken ct)
     {
         return await db.UserAccounts.AnyAsync(e => e.Email == email, ct);

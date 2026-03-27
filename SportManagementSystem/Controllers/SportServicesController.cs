@@ -37,6 +37,7 @@ public class SportServicesController(IMediator mediator) : ApiControllerV1WithAu
     /// <summary>
     /// Получить услуги филиала.
     /// </summary>
+    [AllowAnonymous]
     [HttpGet("branch/{branchId:long}")]
     public async Task<IActionResult> GetByBranchId(long branchId, CancellationToken ct)
     {

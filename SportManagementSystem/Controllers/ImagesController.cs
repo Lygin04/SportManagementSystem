@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportManagementSystem.BuildingBlocks.Abstractions;
 using SportManagementSystem.Modules.Images.Application.Commands.DeleteImage;
@@ -27,6 +28,7 @@ public class ImagesController(IMediator mediator) : ApiControllerV1WithAuth
     /// <summary>
     /// Скачать изображение по идентификатору.
     /// </summary>
+    [AllowAnonymous]
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id, CancellationToken ct)
     {

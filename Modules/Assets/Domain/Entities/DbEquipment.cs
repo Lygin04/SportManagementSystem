@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using SportManagementSystem.Modules.Assets.Domain.Enums;
 using SportManagementSystem.Modules.Images.Domain.Entities;
 
@@ -14,8 +13,6 @@ public class DbEquipment
     /// </summary>
     public long Id { get; set; }
     public long RoomId { get; set; }
-
-    [JsonIgnore]
     public DbRoom Room { get; set; }
     
     /// <summary>

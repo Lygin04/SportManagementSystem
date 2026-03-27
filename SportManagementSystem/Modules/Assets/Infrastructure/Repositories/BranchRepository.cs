@@ -34,6 +34,10 @@ public class BranchRepository(ApplicationDbContext db) : IBranchRepository
         return await db.Branches
             .Include(b => b.Images)
             .Include(b => b.Rooms)
+                .ThenInclude(room => room.Images)
+            .Include(b => b.Rooms)
+                .ThenInclude(room => room.Equipments)
+                    .ThenInclude(equipment => equipment.Images)
             .FirstOrDefaultAsync(b => b.Id == id, ct);
     }
 
@@ -103,5 +107,15 @@ public class BranchRepository(ApplicationDbContext db) : IBranchRepository
 
         await db.SaveChangesAsync(ct);
         return true;
+    }
+
+    public async Task<bool> HasManagementAccessAsync(long branchId, long staffId, CancellationToken ct)
+    {
+        return await db.Branches
+            .Where(branch => branch.Id == branchId)
+            .AnyAsync(branch =>
+                branch.AdminId == staffId ||
+                branch.BranchAdmins.Any(admin => admin.Id == staffId) ||
+                branch.BranchStaffs.Any(staff => staff.Id == staffId), ct);
     }
 }

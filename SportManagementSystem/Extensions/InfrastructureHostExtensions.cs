@@ -102,6 +102,7 @@ public static class InfrastructureHostExtensions
         // Clients Module
         services.AddScoped<IBookingRepository, BookingRepository>();
         services.AddScoped<IMembershipRepository, MembershipRepository>();
+        services.AddScoped<IMembershipTemplateRepository, MembershipTemplateRepository>();
 
         // Scheduling Module
         services.AddScoped<IServiceScheduleRepository, ServiceScheduleRepository>();

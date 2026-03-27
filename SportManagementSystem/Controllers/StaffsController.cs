@@ -7,6 +7,7 @@ using SportManagementSystem.Modules.Users.Application.Commands.RegisterBranchSta
 using SportManagementSystem.Modules.Users.Application.Commands.UploadAvatarStaff;
 using SportManagementSystem.Modules.Users.Application.Queries.GetBranchStaffs;
 using SportManagementSystem.Modules.Users.Application.Queries.GetStaff;
+using SportManagementSystem.Modules.Users.Contracts.Response;
 using SportManagementSystem.Modules.Users.Contracts.Requests;
 
 namespace SportManagementSystem.Controllers;
@@ -35,6 +36,29 @@ public class StaffsController(IMediator mediator) : ApiControllerV1WithAuth
     {
         var result = await mediator.Send(new GetBranchStaffsMessage(branchId), ct);
         return ToActionResult(result);
+    }
+
+    [AllowAnonymous]
+    [HttpGet("branch/{branchId:long}/public")]
+    public async Task<IActionResult> GetPublicByBranchId(long branchId, CancellationToken ct)
+    {
+        var result = await mediator.Send(new GetBranchStaffsMessage(branchId), ct);
+        if (!result.IsSuccess)
+        {
+            return ToActionResult(result);
+        }
+
+        var staffs = result.Data.Select(staff => new PublicBranchStaffResponse
+        {
+            StaffId = staff.StaffId,
+            Role = staff.Role,
+            FirstName = staff.FirstName,
+            LastName = staff.LastName,
+            Patronymic = staff.Patronymic,
+            AvatarId = staff.AvatarId,
+        }).ToList();
+
+        return Ok(staffs);
     }
 
     [Authorize(Roles = "Admin")]

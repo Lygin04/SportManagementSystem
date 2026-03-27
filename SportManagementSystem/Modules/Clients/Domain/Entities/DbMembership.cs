@@ -12,6 +12,9 @@ public class DbMembership
     public long Id { get; set; }
     public long ClientId { get; set; }
     public DbClient Client { get; set; }
+
+    public long? MembershipTemplateId { get; set; }
+    public DbMembershipTemplate? MembershipTemplate { get; set; }
     
     public long SportServiceId { get; set; }
     public DbSportService SportService { get; set; }

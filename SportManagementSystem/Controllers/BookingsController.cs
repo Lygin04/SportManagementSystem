@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using SportManagementSystem.BuildingBlocks.Abstractions;
 using SportManagementSystem.Modules.Clients.Application.Commands.CreateBooking;
 using SportManagementSystem.Modules.Clients.Application.Queries.GetBooking;
+using SportManagementSystem.Modules.Clients.Application.Queries.GetMyBookings;
 using SportManagementSystem.Modules.Clients.Contracts.Requests;
+
+using Microsoft.AspNetCore.Authorization;
 
 namespace SportManagementSystem.Controllers;
 
@@ -28,6 +31,17 @@ public class BookingsController(IMediator mediator) : ApiControllerV1WithAuth
     public async Task<IActionResult> GetById(long id, CancellationToken ct)
     {
         var result = await mediator.Send(new GetBookingMessage(id), ct);
+        return ToActionResult(result);
+    }
+
+    /// <summary>
+    /// Получить свои записи на занятия.
+    /// </summary>
+    [Authorize(Roles = "Client")]
+    [HttpGet("me")]
+    public async Task<IActionResult> GetMyBookings(CancellationToken ct)
+    {
+        var result = await mediator.Send(new GetMyBookingsMessage(UserId), ct);
         return ToActionResult(result);
     }
 }

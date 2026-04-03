@@ -2,6 +2,8 @@
 using SportManagementSystem.Modules.Clients.Domain.Entities;
 using SportManagementSystem.Modules.Clients.Domain.Repositories;
 
+using Microsoft.EntityFrameworkCore;
+
 namespace SportManagementSystem.Modules.Clients.Infrastructure.Repositories;
 
 public class MembershipRepository(ApplicationDbContext db) : IMembershipRepository
@@ -24,5 +26,18 @@ public class MembershipRepository(ApplicationDbContext db) : IMembershipReposito
     public async Task<DbMembership?> GetByIdAsync(long id, CancellationToken ct)
     {
         return await db.Memberships.FindAsync(id, ct);
+    }
+
+    public async Task<List<DbMembership>> GetByClientIdAsync(long clientId, CancellationToken ct)
+    {
+        return await db.Memberships
+            .AsNoTracking()
+            .Include(membership => membership.MembershipTemplate)
+            .Include(membership => membership.SportService)
+            .ThenInclude(service => service.Branch)
+            .Where(membership => membership.ClientId == clientId)
+            .OrderByDescending(membership => membership.StartDate)
+            .ThenByDescending(membership => membership.EndDate)
+            .ToListAsync(ct);
     }
 }

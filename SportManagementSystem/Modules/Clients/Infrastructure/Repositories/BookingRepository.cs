@@ -2,6 +2,8 @@
 using SportManagementSystem.Modules.Clients.Domain.Entities;
 using SportManagementSystem.Modules.Clients.Domain.Repositories;
 
+using Microsoft.EntityFrameworkCore;
+
 namespace SportManagementSystem.Modules.Clients.Infrastructure.Repositories;
 
 public class BookingRepository(ApplicationDbContext db) : IBookingRepository
@@ -24,5 +26,17 @@ public class BookingRepository(ApplicationDbContext db) : IBookingRepository
     public async Task<DbBooking?> GetByIdAsync(long id, CancellationToken ct)
     {
         return await db.Bookings.FindAsync(id, ct);
+    }
+
+    public async Task<List<DbBooking>> GetByClientIdAsync(long clientId, CancellationToken ct)
+    {
+        return await db.Bookings
+            .AsNoTracking()
+            .Include(booking => booking.Session)
+            .ThenInclude(session => session.SportService)
+            .ThenInclude(service => service.Branch)
+            .Where(booking => booking.ClientId == clientId)
+            .OrderByDescending(booking => booking.Booked)
+            .ToListAsync(ct);
     }
 }

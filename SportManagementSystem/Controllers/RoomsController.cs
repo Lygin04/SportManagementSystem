@@ -1,7 +1,9 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportManagementSystem.BuildingBlocks.Abstractions;
 using SportManagementSystem.Modules.Assets.Application.Commands.CreateRoom;
+using SportManagementSystem.Modules.Assets.Application.Commands.DeleteRoom;
 using SportManagementSystem.Modules.Assets.Application.Commands.DeleteImageRoom;
 using SportManagementSystem.Modules.Assets.Application.Commands.UploadImageRoom;
 using SportManagementSystem.Modules.Assets.Application.Queries.GetRoom;
@@ -65,6 +67,14 @@ public class RoomsController(IMediator mediator) : ApiControllerV1WithAuth
     public async Task<IActionResult> DeleteImageRoom([FromRoute] long id, [FromRoute] Guid imageId, CancellationToken ct)
     {
         var result = await mediator.Send(new DeleteImageRoomMessage(id, imageId), ct);
+        return ToActionResult(result);
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("{id:long}")]
+    public async Task<IActionResult> Delete([FromRoute] long id, CancellationToken ct)
+    {
+        var result = await mediator.Send(new DeleteRoomMessage(id), ct);
         return ToActionResult(result);
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportManagementSystem.BuildingBlocks.Abstractions;
 using SportManagementSystem.Modules.Scheduling.Application.Commands.CreateServiceSchedule;
+using SportManagementSystem.Modules.Scheduling.Application.Commands.DeleteServiceSchedule;
 using SportManagementSystem.Modules.Scheduling.Application.Queries.GetServiceSchedule;
 using SportManagementSystem.Modules.Scheduling.Application.Queries.GetServiceSchedulesByBranch;
 using SportManagementSystem.Modules.Scheduling.Contracts.Response;
@@ -50,6 +51,14 @@ public class ServiceSchedulesController(IMediator mediator) : ApiControllerV1Wit
         }
 
         return Ok(result.Data.Select(MapServiceSchedule).ToList());
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("{id:long}")]
+    public async Task<IActionResult> Delete([FromRoute] long id, CancellationToken ct)
+    {
+        var result = await mediator.Send(new DeleteServiceScheduleMessage(id), ct);
+        return ToActionResult(result);
     }
 
     private static ServiceScheduleResponse MapServiceSchedule(DbServiceSchedule schedule)

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportManagementSystem.BuildingBlocks.Abstractions;
 using SportManagementSystem.Modules.Services.Application.Commands.CreateSportService;
+using SportManagementSystem.Modules.Services.Application.Commands.DeleteSportService;
 using SportManagementSystem.Modules.Services.Application.Queries.GetSportService;
 using SportManagementSystem.Modules.Services.Application.Queries.GetSportServicesByBranch;
 using SportManagementSystem.Modules.Services.Contracts.Requests;
@@ -42,6 +43,14 @@ public class SportServicesController(IMediator mediator) : ApiControllerV1WithAu
     public async Task<IActionResult> GetByBranchId(long branchId, CancellationToken ct)
     {
         var result = await mediator.Send(new GetSportServicesByBranchMessage(branchId), ct);
+        return ToActionResult(result);
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("{id:long}")]
+    public async Task<IActionResult> Delete([FromRoute] long id, CancellationToken ct)
+    {
+        var result = await mediator.Send(new DeleteSportServiceMessage(id), ct);
         return ToActionResult(result);
     }
 }

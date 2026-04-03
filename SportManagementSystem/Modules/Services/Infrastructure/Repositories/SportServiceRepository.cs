@@ -37,13 +37,21 @@ public class SportServiceRepository(ApplicationDbContext db) : ISportServiceRepo
         return await db.SportServices
             .AsNoTracking()
             .Include(service => service.Prices)
-            .Where(service => service.BranchId == branchId)
+            .Where(service => service.BranchId == branchId && service.IsActive)
             .OrderBy(service => service.Name)
             .ToListAsync(ct);
     }
 
     public async Task<bool> UpdateActive(long id, bool isActive, CancellationToken ct)
     {
-        return false; //await db.SportServices..FindAsync(id, ct) != null;
+        var updatedRows = await db.SportServices
+            .Where(service => service.Id == id)
+            .ExecuteUpdateAsync(setters => setters
+                .SetProperty(service => service.IsActive, isActive)
+                .SetProperty(service => service.Modified, (DateTimeOffset?)DateTimeOffset.UtcNow), ct);
+
+        db.ChangeTracker.Clear();
+
+        return updatedRows > 0;
     }
 }

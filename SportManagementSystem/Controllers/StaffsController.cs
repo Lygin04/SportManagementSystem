@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportManagementSystem.BuildingBlocks.Abstractions;
 using SportManagementSystem.Modules.Images.Contracts.Requests;
+using SportManagementSystem.Modules.Users.Application.Commands.DeleteStaff;
 using SportManagementSystem.Modules.Users.Application.Commands.RegisterBranchStaff;
 using SportManagementSystem.Modules.Users.Application.Commands.UploadAvatarStaff;
 using SportManagementSystem.Modules.Users.Application.Queries.GetBranchStaffs;
@@ -76,6 +77,14 @@ public class StaffsController(IMediator mediator) : ApiControllerV1WithAuth
     public async Task<IActionResult> UploadAvatar([FromForm] UploadImageRequest request, CancellationToken ct)
     {
         var result = await mediator.Send(new UploadAvatarStaffMessage(UserId, request), ct);
+        return ToActionResult(result);
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("{id:long}")]
+    public async Task<IActionResult> Delete([FromRoute] long id, CancellationToken ct)
+    {
+        var result = await mediator.Send(new DeleteStaffMessage(id, UserId), ct);
         return ToActionResult(result);
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportManagementSystem.BuildingBlocks.Abstractions;
 using SportManagementSystem.Modules.Clients.Application.Commands.CreateMembershipTemplate;
+using SportManagementSystem.Modules.Clients.Application.Commands.DeleteMembershipTemplate;
 using SportManagementSystem.Modules.Clients.Application.Queries.GetMembershipTemplatesByBranch;
 using SportManagementSystem.Modules.Clients.Contracts.Requests;
 
@@ -25,6 +26,14 @@ public class MembershipTemplatesController(IMediator mediator) : ApiControllerV1
     public async Task<IActionResult> GetByBranchId(long branchId, CancellationToken ct)
     {
         var result = await mediator.Send(new GetMembershipTemplatesByBranchMessage(branchId), ct);
+        return ToActionResult(result);
+    }
+
+    [Authorize(Roles = "Admin, Manager")]
+    [HttpDelete("{id:long}")]
+    public async Task<IActionResult> Delete([FromRoute] long id, CancellationToken ct)
+    {
+        var result = await mediator.Send(new DeleteMembershipTemplateMessage(id), ct);
         return ToActionResult(result);
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportManagementSystem.BuildingBlocks.Abstractions;
 using SportManagementSystem.Modules.Assets.Application.Commands.CreateEquipment;
+using SportManagementSystem.Modules.Assets.Application.Commands.DeleteEquipment;
 using SportManagementSystem.Modules.Assets.Application.Commands.DeleteImageEquipment;
 using SportManagementSystem.Modules.Assets.Application.Commands.UploadImageEquipment;
 using SportManagementSystem.Modules.Assets.Application.Queries.GetEquipment;
@@ -66,6 +67,14 @@ public class EquipmentsController(IMediator mediator) : ApiControllerV1WithAuth
     public async Task<IActionResult> DeleteImageEquipment([FromRoute] long id, [FromRoute] Guid imageId, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(new DeleteImageEquipmentMessage(id, imageId), cancellationToken);
+        return ToActionResult(result);
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("{id:long}")]
+    public async Task<IActionResult> Delete([FromRoute] long id, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(new DeleteEquipmentMessage(id), cancellationToken);
         return ToActionResult(result);
     }
 }

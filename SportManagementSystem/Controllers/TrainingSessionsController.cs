@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportManagementSystem.BuildingBlocks.Abstractions;
 using SportManagementSystem.Modules.Scheduling.Application.Commands.CreateTrainingSession;
+using SportManagementSystem.Modules.Scheduling.Application.Commands.DeleteTrainingSession;
 using SportManagementSystem.Modules.Scheduling.Application.Queries.GetTrainingSession;
 using SportManagementSystem.Modules.Scheduling.Application.Queries.GetTrainingSessionsByBranch;
 using SportManagementSystem.Modules.Scheduling.Contracts.Requests;
@@ -39,6 +40,14 @@ public class TrainingSessionsController(IMediator mediator) : ApiControllerV1Wit
     public async Task<IActionResult> GetByBranchId(long branchId, CancellationToken ct)
     {
         var result = await mediator.Send(new GetTrainingSessionsByBranchMessage(branchId), ct);
+        return ToActionResult(result);
+    }
+
+    [Authorize(Roles = "Admin,Manager")]
+    [HttpDelete("{id:long}")]
+    public async Task<IActionResult> Delete([FromRoute] long id, CancellationToken ct)
+    {
+        var result = await mediator.Send(new DeleteTrainingSessionMessage(id), ct);
         return ToActionResult(result);
     }
 }

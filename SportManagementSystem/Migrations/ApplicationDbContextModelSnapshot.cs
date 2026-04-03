@@ -160,7 +160,7 @@ namespace SportManagementSystem.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("Booked")
+                    b.Property<DateTimeOffset>("Booked")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<long?>("ClientId")
@@ -171,6 +171,10 @@ namespace SportManagementSystem.Migrations
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
+
+                    b.Property<string>("TimeZoneId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -235,7 +239,7 @@ namespace SportManagementSystem.Migrations
                     b.Property<long>("BranchId")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime>("Created")
+                    b.Property<DateTimeOffset>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
@@ -247,7 +251,7 @@ namespace SportManagementSystem.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime?>("Modified")
+                    b.Property<DateTimeOffset?>("Modified")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
@@ -288,7 +292,7 @@ namespace SportManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedAtUtc")
+                    b.Property<DateTimeOffset>("CreatedAtUtc")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<long?>("DbBranchId")
@@ -370,7 +374,7 @@ namespace SportManagementSystem.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("EndedDate")
+                    b.Property<DateTimeOffset>("EndedDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<long?>("ScheduleId")
@@ -379,11 +383,15 @@ namespace SportManagementSystem.Migrations
                     b.Property<long>("SportServiceId")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime>("StartedDate")
+                    b.Property<DateTimeOffset>("StartedDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
+
+                    b.Property<string>("TimeZoneId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<long>("TrainerId")
                         .HasColumnType("bigint");
@@ -447,7 +455,7 @@ namespace SportManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("Created")
+                    b.Property<DateTimeOffset>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
@@ -456,7 +464,7 @@ namespace SportManagementSystem.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime?>("Modified")
+                    b.Property<DateTimeOffset?>("Modified")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
@@ -495,7 +503,7 @@ namespace SportManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("Modified")
+                    b.Property<DateTimeOffset?>("Modified")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Patronymic")
@@ -505,7 +513,7 @@ namespace SportManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("RegisterDate")
+                    b.Property<DateTimeOffset>("RegisterDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
@@ -562,17 +570,17 @@ namespace SportManagementSystem.Migrations
                     b.Property<long?>("ClientId")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime>("Created")
+                    b.Property<DateTimeOffset>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("LastLogin")
+                    b.Property<DateTimeOffset?>("LastLogin")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("Modified")
+                    b.Property<DateTimeOffset?>("Modified")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("PasswordHash")

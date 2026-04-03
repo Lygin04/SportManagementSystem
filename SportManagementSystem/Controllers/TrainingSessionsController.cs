@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SportManagementSystem.BuildingBlocks.Abstractions;
 using SportManagementSystem.Modules.Scheduling.Application.Commands.CreateTrainingSession;
 using SportManagementSystem.Modules.Scheduling.Application.Queries.GetTrainingSession;
+using SportManagementSystem.Modules.Scheduling.Application.Queries.GetTrainingSessionsByBranch;
 using SportManagementSystem.Modules.Scheduling.Contracts.Requests;
 
 namespace SportManagementSystem.Controllers;
@@ -13,7 +14,7 @@ public class TrainingSessionsController(IMediator mediator) : ApiControllerV1Wit
     /// <summary>
     /// Создать тренировку.
     /// </summary>
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Manager")]
     [HttpPost]
     public async Task<IActionResult> Create(CreateTrainingSessionRequest request, CancellationToken ct)
     {
@@ -30,6 +31,14 @@ public class TrainingSessionsController(IMediator mediator) : ApiControllerV1Wit
     public async Task<IActionResult> GetById(long id, CancellationToken ct)
     {
         var result = await mediator.Send(new GetTrainingSessionMessage(id), ct);
+        return ToActionResult(result);
+    }
+
+    [Authorize(Roles = "Admin,Manager,Client")]
+    [HttpGet("branch/{branchId:long}")]
+    public async Task<IActionResult> GetByBranchId(long branchId, CancellationToken ct)
+    {
+        var result = await mediator.Send(new GetTrainingSessionsByBranchMessage(branchId), ct);
         return ToActionResult(result);
     }
 }

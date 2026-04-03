@@ -1,7 +1,8 @@
-﻿using MediatR;
+using MediatR;
 using SportManagementSystem.BuildingBlocks;
 using SportManagementSystem.BuildingBlocks.Abstractions;
 using SportManagementSystem.BuildingBlocks.Authentication.Hash.Interfaces;
+using SportManagementSystem.BuildingBlocks.Time;
 using SportManagementSystem.Modules.Users.Domain.Entities;
 using SportManagementSystem.Modules.Users.Domain.Enums;
 using SportManagementSystem.Modules.Users.Domain.Repositories;
@@ -9,6 +10,7 @@ using SportManagementSystem.Modules.Users.Domain.Repositories;
 namespace SportManagementSystem.Modules.Users.Application.Commands.RegisterAdmin;
 
 public class RegisterAdminHandler(
+    IAppClock clock,
     IUserAccountRepository userAccountRepository,
     IStaffRepository staffRepository,
     IPasswordHasher passwordHasher) : IMessageHandler<RegisterAdminMessage, MbResult<Unit>>
@@ -41,7 +43,7 @@ public class RegisterAdminHandler(
             Role = EUserRole.Admin,
             Status = EAccountStatus.Active,
             StaffId = staff.Id,
-            Created = DateTime.UtcNow,
+            Created = clock.UtcNow,
         };
 
         await userAccountRepository.CreateAsync(userAccount, cancellationToken);

@@ -1,5 +1,6 @@
 using SportManagementSystem.BuildingBlocks;
 using SportManagementSystem.BuildingBlocks.Abstractions;
+using SportManagementSystem.BuildingBlocks.Time;
 using SportManagementSystem.Modules.Assets.Domain.Repositories;
 using SportManagementSystem.Modules.Clients.Domain.Entities;
 using SportManagementSystem.Modules.Clients.Domain.Repositories;
@@ -8,6 +9,7 @@ using SportManagementSystem.Modules.Services.Domain.Repositories;
 namespace SportManagementSystem.Modules.Clients.Application.Commands.CreateMembershipTemplate;
 
 public class CreateMembershipTemplateHandler(
+    IAppClock clock,
     IMembershipTemplateRepository membershipTemplateRepository,
     IBranchRepository branchRepository,
     ISportServiceRepository sportServiceRepository,
@@ -61,7 +63,7 @@ public class CreateMembershipTemplateHandler(
             DurationDays = request.Request.DurationDays,
             VisitLimit = request.Request.VisitLimit,
             IsActive = true,
-            Created = DateTime.UtcNow,
+            Created = clock.UtcNow,
         };
 
         var created = await membershipTemplateRepository.CreateAsync(template, cancellationToken);

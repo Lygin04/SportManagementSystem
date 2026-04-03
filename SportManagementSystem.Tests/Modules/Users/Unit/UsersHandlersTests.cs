@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Moq;
 using SportManagementSystem.BuildingBlocks.Authentication.Hash.Interfaces;
+using SportManagementSystem.BuildingBlocks.Time;
 using SportManagementSystem.Modules.Users.Application.Commands.LoginUser;
 using SportManagementSystem.Modules.Users.Application.Commands.RegisterStaff;
 using SportManagementSystem.Modules.Users.Contracts.Requests;
@@ -19,6 +20,7 @@ public class UsersHandlersTests
     private readonly Mock<IStaffRepository> _staffRepoMock;
     private readonly Mock<IPasswordHasher> _hasherMock;
     private readonly Mock<IJwtTokenService> _jwtMock;
+    private readonly Mock<IAppClock> _clockMock;
     private readonly RegisterStaffHandler _registerStaffHandler;
     private readonly LoginUserHandler _loginUserHandler;
 
@@ -28,9 +30,11 @@ public class UsersHandlersTests
         _staffRepoMock = new Mock<IStaffRepository>();
         _hasherMock = new Mock<IPasswordHasher>();
         _jwtMock = new Mock<IJwtTokenService>();
+        _clockMock = new Mock<IAppClock>();
+        _clockMock.SetupGet(x => x.UtcNow).Returns(new DateTimeOffset(2026, 3, 27, 12, 0, 0, TimeSpan.Zero));
 
-        _registerStaffHandler = new RegisterStaffHandler(_userRepoMock.Object, _staffRepoMock.Object, _hasherMock.Object);
-        _loginUserHandler = new LoginUserHandler(_jwtMock.Object, _hasherMock.Object, _userRepoMock.Object);
+        _registerStaffHandler = new RegisterStaffHandler(_clockMock.Object, _userRepoMock.Object, _staffRepoMock.Object, _hasherMock.Object);
+        _loginUserHandler = new LoginUserHandler(_clockMock.Object, _jwtMock.Object, _hasherMock.Object, _userRepoMock.Object);
     }
 
     [Fact]
@@ -88,7 +92,7 @@ public class UsersHandlersTests
         Assert.Equal("hashed-password", createdUser.PasswordHash);
         Assert.Equal(request.Role, createdUser.Role);
         Assert.Equal(EAccountStatus.Active, createdUser.Status);
-        Assert.Equal(42, createdUser.ClientId);
+        Assert.Equal(42, createdUser.StaffId);
     }
 
     [Fact]
@@ -116,7 +120,8 @@ public class UsersHandlersTests
             Email = "test@test.com",
             PasswordHash = "stored-hash",
             Role = EUserRole.Manager,
-            Status = EAccountStatus.Active
+            Status = EAccountStatus.Active,
+            StaffId = 100
         };
         _userRepoMock
             .Setup(x => x.GetByEmailAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
@@ -143,7 +148,8 @@ public class UsersHandlersTests
             Email = "test@test.com",
             PasswordHash = "stored-hash",
             Role = EUserRole.Manager,
-            Status = EAccountStatus.Suspended
+            Status = EAccountStatus.Suspended,
+            StaffId = 100
         };
         _userRepoMock
             .Setup(x => x.GetByEmailAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
@@ -170,12 +176,13 @@ public class UsersHandlersTests
             Email = "test@test.com",
             PasswordHash = "stored-hash",
             Role = EUserRole.Trainer,
-            Status = EAccountStatus.Active
+            Status = EAccountStatus.Active,
+            StaffId = 555
         };
         var tokenResponse = new LoginUserResponse
         {
             Token = "jwt-token",
-            Expires = DateTime.UtcNow.AddHours(1)
+            Expires = new DateTimeOffset(2026, 3, 27, 13, 0, 0, TimeSpan.Zero)
         };
         ICollection<Claim>? sentClaims = null;
         _userRepoMock

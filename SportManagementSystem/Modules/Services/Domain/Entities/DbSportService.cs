@@ -38,12 +38,12 @@ public class DbSportService
     /// <summary>
     /// Дата и время создание записи.
     /// </summary>
-    public DateTime Created { get; set; }
+    public DateTimeOffset Created { get; set; }
     
     /// <summary>
     /// Дата и время последнего изменения данных.
     /// </summary>
-    public DateTime? Modified { get; set; }
+    public DateTimeOffset? Modified { get; set; }
 
     public long BranchId { get; set; }
     public DbBranch Branch { get; set; } = null!;

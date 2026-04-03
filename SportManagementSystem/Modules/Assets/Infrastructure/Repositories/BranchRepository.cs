@@ -71,6 +71,18 @@ public class BranchRepository(ApplicationDbContext db) : IBranchRepository
             .ToListAsync(ct);
     }
 
+    public async Task<List<DbBranch>> GetManagedByStaffAsync(long staffId, CancellationToken ct)
+    {
+        return await db.Branches
+            .Where(branch =>
+                branch.AdminId == staffId ||
+                branch.BranchAdmins.Any(admin => admin.Id == staffId) ||
+                branch.BranchStaffs.Any(staff => staff.Id == staffId))
+            .Include(b => b.Images)
+            .Include(r => r.Rooms)
+            .ToListAsync(ct);
+    }
+
     public async Task<bool> ExistsAsync(long id, CancellationToken ct)
     {
         return db.Branches.Any(e => e.Id == id);

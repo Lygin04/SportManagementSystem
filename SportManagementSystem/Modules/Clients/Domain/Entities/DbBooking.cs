@@ -17,10 +17,12 @@ public class DbBooking
     public long SessionId { get; set; }
     public DbTrainingSession Session { get; set; }
 
+    public string TimeZoneId { get; set; } = "UTC";
+
     /// <summary>
     /// Дата и время записи.
     /// </summary>
-    public DateTime Booked { get; set; }
+    public DateTimeOffset Booked { get; set; }
     
     /// <summary>
     /// Статус записи.

@@ -8,5 +8,5 @@ public class DbImage
     public string FileName { get; set; } = null!;
     public string ContentType { get; set; } = null!;
     public long Length { get; set; }
-    public DateTime CreatedAtUtc { get; set; }
+    public DateTimeOffset CreatedAtUtc { get; set; }
 }

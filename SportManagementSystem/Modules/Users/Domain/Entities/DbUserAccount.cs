@@ -38,15 +38,15 @@ public class DbUserAccount
     /// <summary>
     /// Дата и время создания.
     /// </summary>
-    public DateTime Created { get; set; }
+    public DateTimeOffset Created { get; set; }
     
     /// <summary>
     /// Дата и время обновления.
     /// </summary>
-    public DateTime? Modified { get; set; }
+    public DateTimeOffset? Modified { get; set; }
     
     /// <summary>
     /// Дата и время последнего входа.
     /// </summary>
-    public DateTime? LastLogin { get; set; }
+    public DateTimeOffset? LastLogin { get; set; }
 }

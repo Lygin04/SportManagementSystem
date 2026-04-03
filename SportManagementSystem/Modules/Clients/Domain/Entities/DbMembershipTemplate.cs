@@ -20,8 +20,8 @@ public class DbMembershipTemplate
     public int DurationDays { get; set; }
     public int? VisitLimit { get; set; }
     public bool IsActive { get; set; }
-    public DateTime Created { get; set; }
-    public DateTime? Modified { get; set; }
+    public DateTimeOffset Created { get; set; }
+    public DateTimeOffset? Modified { get; set; }
 
     public ICollection<DbMembership> Memberships { get; set; } = new List<DbMembership>();
 }

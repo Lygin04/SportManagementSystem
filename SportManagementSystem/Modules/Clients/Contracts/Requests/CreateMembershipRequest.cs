@@ -10,12 +10,12 @@ public class CreateMembershipRequest
     /// <summary>
     /// Дата начала действия.
     /// </summary>
-    public DateOnly StartDate { get; set; }
+    public DateOnly? StartDate { get; set; }
     
     /// <summary>
     /// Дата окончания действия.
     /// </summary>
-    public DateOnly EndDate { get; set; }
+    public DateOnly? EndDate { get; set; }
     
     /// <summary>
     /// Общее количество посещений.

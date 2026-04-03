@@ -1,5 +1,8 @@
-﻿using SportManagementSystem.BuildingBlocks;
+using MediatR;
+using SportManagementSystem.BuildingBlocks;
 using SportManagementSystem.BuildingBlocks.Abstractions;
+using SportManagementSystem.BuildingBlocks.Time;
+using SportManagementSystem.Modules.Analytics.Domain.Events;
 using SportManagementSystem.Modules.Clients.Domain.Entities;
 using SportManagementSystem.Modules.Clients.Domain.Enums;
 using SportManagementSystem.Modules.Clients.Domain.Repositories;
@@ -9,10 +12,12 @@ using SportManagementSystem.Modules.Users.Domain.Repositories;
 namespace SportManagementSystem.Modules.Clients.Application.Commands.CreateMembership;
 
 public class CreateMembershipHandler(
+    IMediator mediator,
     IMembershipRepository membershipRepository,
     IClientRepository clientRepository,
     ISportServiceRepository sportServiceRepository,
-    IMembershipTemplateRepository membershipTemplateRepository) : IMessageHandler<CreateMembershipMessage, MbResult<long>>
+    IMembershipTemplateRepository membershipTemplateRepository,
+    IAppClock clock) : IMessageHandler<CreateMembershipMessage, MbResult<long>>
 {
     public async Task<MbResult<long>> Handle(CreateMembershipMessage request, CancellationToken cancellationToken)
     {
@@ -40,9 +45,8 @@ public class CreateMembershipHandler(
         }
 
         var sportServiceId = membershipTemplate.Data?.SportServiceId ?? request.Request.SportServiceId;
-        var sportServiceExists =
-            await sportServiceRepository.ExistsAsync(sportServiceId, cancellationToken);
-        if (!sportServiceExists)
+        var sportService = await sportServiceRepository.GetByIdAsync(sportServiceId, cancellationToken);
+        if (sportService is null)
         {
             return MbResult<long>.Failure(new MbError(
                 title: "Sport service not found",
@@ -50,10 +54,12 @@ public class CreateMembershipHandler(
                 detail: "Спортивная секция не найдена"));
         }
 
-        var startDate = request.Request.StartDate;
+        var startDate = membershipTemplate.Data is null
+            ? request.Request.StartDate!.Value
+            : clock.TodayInDefaultTimeZone;
         var endDate = membershipTemplate.Data is null
-            ? request.Request.EndDate
-            : request.Request.StartDate.AddDays(Math.Max(0, membershipTemplate.Data.DurationDays - 1));
+            ? request.Request.EndDate!.Value
+            : startDate.AddDays(Math.Max(0, membershipTemplate.Data.DurationDays - 1));
 
         var membership = new DbMembership
         {
@@ -66,7 +72,21 @@ public class CreateMembershipHandler(
             RemainingVisits = membershipTemplate.Data?.VisitLimit ?? request.Request.RemainingVisits,
             Status = EMembershipStatus.Active
         };
+
         var result = await membershipRepository.CreateAsync(membership, cancellationToken);
+
+        await mediator.Publish(new ClientPurchasedMembershipDomainEvent(
+            ClientId: clientId,
+            MembershipId: result.Id,
+            MembershipTemplateId: membership.MembershipTemplateId,
+            SportServiceId: membership.SportServiceId,
+            BranchId: sportService.BranchId,
+            TotalVisits: membership.TotalVisits,
+            RemainingVisits: membership.RemainingVisits,
+            PurchasedByUserId: request.UserId,
+            PurchasedByRole: request.Role,
+            OccurredOnUtc: clock.UtcNow), cancellationToken);
+
         return MbResult<long>.Success(result.Id);
     }
 
@@ -79,7 +99,9 @@ public class CreateMembershipHandler(
             return MbResult<DbMembershipTemplate?>.Success(null);
         }
 
-        var template = await membershipTemplateRepository.GetByIdAsync(request.Request.MembershipTemplateId.Value, cancellationToken);
+        var template = await membershipTemplateRepository.GetByIdAsync(
+            request.Request.MembershipTemplateId.Value,
+            cancellationToken);
         if (template is null || !template.IsActive)
         {
             return MbResult<DbMembershipTemplate?>.Failure(new MbError(

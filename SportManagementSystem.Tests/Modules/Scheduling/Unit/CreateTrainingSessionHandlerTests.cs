@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Moq;
+using SportManagementSystem.BuildingBlocks.Time;
 using SportManagementSystem.Modules.Scheduling.Application.Commands.CreateTrainingSession;
 using SportManagementSystem.Modules.Scheduling.Contracts.Requests;
 using SportManagementSystem.Modules.Scheduling.Domain.Entities;
@@ -18,6 +19,7 @@ public class CreateTrainingSessionHandlerTests
     private readonly Mock<IServiceScheduleRepository> _serviceScheduleRepository;
     private readonly Mock<IStaffRepository> _staffRepository;
     private readonly Mock<IUserAccountRepository> _userAccountRepository;
+    private readonly Mock<IAppClock> _clock;
     private readonly CreateTrainingSessionHandler _handler;
 
     public CreateTrainingSessionHandlerTests()
@@ -27,7 +29,10 @@ public class CreateTrainingSessionHandlerTests
         _serviceScheduleRepository = new Mock<IServiceScheduleRepository>();
         _staffRepository = new Mock<IStaffRepository>();
         _userAccountRepository = new Mock<IUserAccountRepository>();
+        _clock = new Mock<IAppClock>();
+        _clock.SetupGet(x => x.DefaultTimeZone).Returns(TimeZoneInfo.Utc);
         _handler = new CreateTrainingSessionHandler(
+            _clock.Object,
             _trainingSessionRepository.Object,
             _sportServiceRepository.Object,
             _serviceScheduleRepository.Object,
@@ -74,7 +79,7 @@ public class CreateTrainingSessionHandlerTests
             PasswordHash = "hash",
             Role = EUserRole.Manager,
             Status = EAccountStatus.Active,
-            Created = DateTime.UtcNow
+            Created = DateTimeOffset.UtcNow
         });
 
         var result = await _handler.Handle(CreateMessage(), CancellationToken.None);
@@ -97,7 +102,7 @@ public class CreateTrainingSessionHandlerTests
             PasswordHash = "hash",
             Role = EUserRole.Trainer,
             Status = EAccountStatus.Active,
-            Created = DateTime.UtcNow
+            Created = DateTimeOffset.UtcNow
         });
         _trainingSessionRepository
             .Setup(x => x.CreateAsync(It.IsAny<DbTrainingSession>(), It.IsAny<CancellationToken>()))
@@ -114,6 +119,7 @@ public class CreateTrainingSessionHandlerTests
         Assert.Equal(77, result.Data);
         Assert.NotNull(created);
         Assert.Equal(5, created!.TrainerId);
+        Assert.Equal("UTC", created.TimeZoneId);
     }
 
     private static CreateTrainingSessionMessage CreateMessage() =>
@@ -122,7 +128,7 @@ public class CreateTrainingSessionHandlerTests
             SportServiceId = 3,
             ScheduleId = 1,
             TrainerId = 5,
-            StartedDate = DateTime.UtcNow.AddHours(2),
-            EndedDate = DateTime.UtcNow.AddHours(3)
+            StartedDate = DateTimeOffset.UtcNow.AddHours(2),
+            EndedDate = DateTimeOffset.UtcNow.AddHours(3)
         });
 }

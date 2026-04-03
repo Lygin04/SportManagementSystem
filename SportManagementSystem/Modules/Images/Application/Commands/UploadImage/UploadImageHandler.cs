@@ -6,6 +6,7 @@ using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Formats.Png;
 using SportManagementSystem.BuildingBlocks;
 using SportManagementSystem.BuildingBlocks.Abstractions;
+using SportManagementSystem.BuildingBlocks.Time;
 using SportManagementSystem.Data;
 using SportManagementSystem.Modules.Images.Domain.Entities;
 using SportManagementSystem.Modules.Images.Domain.Repositories;
@@ -14,6 +15,7 @@ using SportManagementSystem.Modules.Images.Infrastructure;
 namespace SportManagementSystem.Modules.Images.Application.Commands.UploadImage;
 
 public class UploadImageHandler(
+    IAppClock clock,
     IMinioClient minioClient,
     IImageRepository imageRepository,
     ApplicationDbContext dbContext,
@@ -73,7 +75,7 @@ public class UploadImageHandler(
                 FileName = request.Request.File.FileName,
                 ContentType = contentType,
                 Length = contentLength,
-                CreatedAtUtc = DateTime.UtcNow
+                CreatedAtUtc = clock.UtcNow
             };
 
             await using var transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
@@ -102,7 +104,6 @@ public class UploadImageHandler(
             }
             catch
             {
-                // Swallow cleanup errors to avoid masking the original exception.
             }
 
             return MbResult<Guid>.Failure(new MbError(

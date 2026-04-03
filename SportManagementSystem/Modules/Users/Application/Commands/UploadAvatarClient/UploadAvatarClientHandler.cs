@@ -1,6 +1,7 @@
 using MediatR;
 using SportManagementSystem.BuildingBlocks;
 using SportManagementSystem.BuildingBlocks.Abstractions;
+using SportManagementSystem.BuildingBlocks.Time;
 using SportManagementSystem.Modules.Images.Application.Commands.DeleteImage;
 using SportManagementSystem.Modules.Images.Application.Commands.UploadImage;
 using SportManagementSystem.Modules.Users.Domain.Repositories;
@@ -8,6 +9,7 @@ using SportManagementSystem.Modules.Users.Domain.Repositories;
 namespace SportManagementSystem.Modules.Users.Application.Commands.UploadAvatarClient;
 
 public class UploadAvatarClientHandler(
+    IAppClock clock,
     IClientRepository clientRepository,
     IMediator mediator) : IMessageHandler<UploadAvatarClientMessage, MbResult<Unit>>
 {
@@ -24,12 +26,12 @@ public class UploadAvatarClientHandler(
 
         if (client.Avatar != null)
         {
-             await mediator.Send(new DeleteImageMessage(client.AvatarId!.Value),  cancellationToken);
+            await mediator.Send(new DeleteImageMessage(client.AvatarId!.Value), cancellationToken);
         }
         
         var imageId = await mediator.Send(new UploadImageMessage(request.Request), cancellationToken);
         client.AvatarId = imageId.Data;
-        client.Modified = DateTime.UtcNow;
+        client.Modified = clock.UtcNow;
         
         await clientRepository.SetImageIdAsync(request.UserId, client.AvatarId, cancellationToken);
         

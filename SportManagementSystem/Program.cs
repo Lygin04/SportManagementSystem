@@ -1,6 +1,7 @@
 using Hangfire;
 using Microsoft.EntityFrameworkCore;
 using SportManagementSystem.Data;
+using SportManagementSystem.BuildingBlocks.Time;
 using SportManagementSystem.Extensions;
 using SportManagementSystem.Middleware;
 using SportManagementSystem.Modules.Scheduling.Application.Dispatchers;
@@ -9,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
+builder.Services.Configure<AppTimeOptions>(configuration.GetSection("Time"));
+builder.Services.AddSingleton<IAppClock, SystemAppClock>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(
@@ -18,6 +21,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddHangfireWithPostgres(configuration);
 builder.Services.AddMinio(configuration);
+builder.Services.AddClickHouseAnalytics(configuration);
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly));
 builder.Services.AddFluentValidation();

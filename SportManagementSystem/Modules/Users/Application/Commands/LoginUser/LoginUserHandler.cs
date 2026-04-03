@@ -2,6 +2,7 @@ using System.Security.Claims;
 using SportManagementSystem.BuildingBlocks;
 using SportManagementSystem.BuildingBlocks.Abstractions;
 using SportManagementSystem.BuildingBlocks.Authentication.Hash.Interfaces;
+using SportManagementSystem.BuildingBlocks.Time;
 using SportManagementSystem.Modules.Users.Contracts.Response;
 using SportManagementSystem.Modules.Users.Domain.Enums;
 using SportManagementSystem.Modules.Users.Domain.Repositories;
@@ -10,6 +11,7 @@ using SportManagementSystem.Modules.Users.Domain.Services;
 namespace SportManagementSystem.Modules.Users.Application.Commands.LoginUser;
 
 public class LoginUserHandler(
+    IAppClock clock,
     IJwtTokenService jwtService,
     IPasswordHasher passwordHasher,
     IUserAccountRepository userAccountRepository) : IMessageHandler<LoginUserMessage, MbResult<LoginUserResponse>>
@@ -34,7 +36,7 @@ public class LoginUserHandler(
                 detail: "Аккаунт удален или заблокирован"));
         }
         
-        candidate.LastLogin = DateTime.UtcNow;
+        candidate.LastLogin = clock.UtcNow;
         await userAccountRepository.UpdateLastLoginDateAsync(candidate.Id, cancellationToken);
 
         var userId = candidate.Role == EUserRole.Client
@@ -46,7 +48,7 @@ public class LoginUserHandler(
             new("email", candidate.Email),
             new("role", candidate.Role.ToString()),
             new("id", userId.ToString()),
-            new ("account_id", candidate.Id.ToString()),
+            new("account_id", candidate.Id.ToString()),
         });
 
         return MbResult<LoginUserResponse>.Success(response);

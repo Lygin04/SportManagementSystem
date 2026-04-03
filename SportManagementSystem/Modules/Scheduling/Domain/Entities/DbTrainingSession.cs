@@ -16,15 +16,17 @@ public class DbTrainingSession
     public long? ScheduleId { get; set; }
     public DbServiceSchedule? Schedule { get; set; }
 
+    public string TimeZoneId { get; set; } = "UTC";
+
     /// <summary>
     /// Дата и время начала занятия.
     /// </summary>
-    public DateTime StartedDate { get; set; }
+    public DateTimeOffset StartedDate { get; set; }
     
     /// <summary>
     /// Дата и время конца занятия.
     /// </summary>
-    public DateTime EndedDate { get; set; }
+    public DateTimeOffset EndedDate { get; set; }
     
     public long TrainerId { get; set; }
     public DbStaff Trainer { get; set; }

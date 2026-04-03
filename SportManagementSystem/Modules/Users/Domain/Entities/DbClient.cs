@@ -38,12 +38,12 @@ public class DbClient
     /// <summary>
     /// Дата и время регистрации в системе.
     /// </summary>
-    public DateTime RegisterDate { get; set; }
+    public DateTimeOffset RegisterDate { get; set; }
     
     /// <summary>
     /// Дата и время последнего изменения данных.
     /// </summary>
-    public DateTime? Modified { get; set; }
+    public DateTimeOffset? Modified { get; set; }
     
     public Guid? AvatarId { get; set; }
     public DbImage? Avatar { get; set; }

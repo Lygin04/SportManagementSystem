@@ -10,5 +10,5 @@ public class LoginUserResponse
     /// <summary>
     /// Время истечения токена.
     /// </summary>
-    public DateTime Expires { get; set; }
+    public DateTimeOffset Expires { get; set; }
 }

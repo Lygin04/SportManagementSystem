@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Moq;
 using SportManagementSystem.BuildingBlocks.Authentication.Hash.Interfaces;
+using SportManagementSystem.BuildingBlocks.Time;
 using SportManagementSystem.Modules.Users.Application.Commands.RegisterClient;
 using SportManagementSystem.Modules.Users.Contracts.Requests;
 using SportManagementSystem.Modules.Users.Domain.Entities;
@@ -14,6 +15,7 @@ public class RegisterClientHandlerTests
     private readonly Mock<IUserAccountRepository> _userAccountRepository;
     private readonly Mock<IClientRepository> _clientRepository;
     private readonly Mock<IPasswordHasher> _passwordHasher;
+    private readonly Mock<IAppClock> _clock;
     private readonly RegisterClientHandler _handler;
 
     public RegisterClientHandlerTests()
@@ -21,7 +23,10 @@ public class RegisterClientHandlerTests
         _userAccountRepository = new Mock<IUserAccountRepository>();
         _clientRepository = new Mock<IClientRepository>();
         _passwordHasher = new Mock<IPasswordHasher>();
+        _clock = new Mock<IAppClock>();
+        _clock.SetupGet(x => x.UtcNow).Returns(new DateTimeOffset(2026, 3, 27, 12, 0, 0, TimeSpan.Zero));
         _handler = new RegisterClientHandler(
+            _clock.Object,
             _userAccountRepository.Object,
             _clientRepository.Object,
             _passwordHasher.Object);

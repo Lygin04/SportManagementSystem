@@ -1,5 +1,6 @@
 using SportManagementSystem.BuildingBlocks;
 using SportManagementSystem.BuildingBlocks.Abstractions;
+using SportManagementSystem.BuildingBlocks.Time;
 using SportManagementSystem.Modules.Assets.Domain.Repositories;
 using SportManagementSystem.Modules.Services.Domain.Entities;
 using SportManagementSystem.Modules.Services.Domain.Repositories;
@@ -7,6 +8,7 @@ using SportManagementSystem.Modules.Services.Domain.Repositories;
 namespace SportManagementSystem.Modules.Services.Application.Commands.CreateSportService;
 
 public class CreateSportServiceHandler(
+    IAppClock clock,
     ISportServiceRepository sportServiceRepository,
     IBranchRepository branchRepository) : IMessageHandler<CreateSportServiceMessage, MbResult<long>>
 {
@@ -37,7 +39,7 @@ public class CreateSportServiceHandler(
             Description = request.Request.Description,
             Category = request.Request.Category,
             IsActive = true,
-            Created = DateTime.UtcNow
+            Created = clock.UtcNow
         };
 
         var result = await sportServiceRepository.CreateAsync(sportService, cancellationToken);

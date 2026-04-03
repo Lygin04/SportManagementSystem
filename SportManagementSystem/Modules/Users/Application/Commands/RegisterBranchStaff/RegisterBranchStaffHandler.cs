@@ -2,6 +2,7 @@ using MediatR;
 using SportManagementSystem.BuildingBlocks;
 using SportManagementSystem.BuildingBlocks.Abstractions;
 using SportManagementSystem.BuildingBlocks.Authentication.Hash.Interfaces;
+using SportManagementSystem.BuildingBlocks.Time;
 using SportManagementSystem.Modules.Assets.Domain.Repositories;
 using SportManagementSystem.Modules.Users.Domain.Entities;
 using SportManagementSystem.Modules.Users.Domain.Enums;
@@ -10,6 +11,7 @@ using SportManagementSystem.Modules.Users.Domain.Repositories;
 namespace SportManagementSystem.Modules.Users.Application.Commands.RegisterBranchStaff;
 
 public class RegisterBranchStaffHandler(
+    IAppClock clock,
     IUserAccountRepository userAccountRepository,
     IStaffRepository staffRepository,
     IBranchRepository branchRepository,
@@ -59,7 +61,7 @@ public class RegisterBranchStaffHandler(
             Role = request.Request.Role,
             Status = EAccountStatus.Active,
             StaffId = staff.Id,
-            Created = DateTime.UtcNow,
+            Created = clock.UtcNow,
         };
 
         await userAccountRepository.CreateAsync(userAccount, cancellationToken);

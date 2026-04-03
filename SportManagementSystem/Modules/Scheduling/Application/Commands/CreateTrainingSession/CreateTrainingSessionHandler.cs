@@ -1,5 +1,6 @@
-﻿using SportManagementSystem.BuildingBlocks;
+using SportManagementSystem.BuildingBlocks;
 using SportManagementSystem.BuildingBlocks.Abstractions;
+using SportManagementSystem.BuildingBlocks.Time;
 using SportManagementSystem.Modules.Scheduling.Domain.Entities;
 using SportManagementSystem.Modules.Scheduling.Domain.Enums;
 using SportManagementSystem.Modules.Scheduling.Domain.Repositories;
@@ -10,6 +11,7 @@ using SportManagementSystem.Modules.Users.Domain.Repositories;
 namespace SportManagementSystem.Modules.Scheduling.Application.Commands.CreateTrainingSession;
 
 public class CreateTrainingSessionHandler(
+    IAppClock clock,
     ITrainingSessionRepository trainingSessionRepository,
     ISportServiceRepository sportServiceRepository,
     IServiceScheduleRepository serviceScheduleRepository,
@@ -49,22 +51,27 @@ public class CreateTrainingSessionHandler(
                 status: StatusCodes.Status404NotFound,
                 detail: "Тренер не найден."));
         }
-        var userAccount = await userAccountRepository.GetByIdAsync(request.Request.TrainerId, cancellationToken);
-        if (userAccount!.Role != EUserRole.Trainer)
+
+        var userAccount = await userAccountRepository.GetByStaffIdAsync(request.Request.TrainerId, cancellationToken);
+        if (userAccount == null || userAccount.Role != EUserRole.Trainer)
         {
             return MbResult<long>.Failure(new MbError(
                 title: "The employee is not a trainer",
                 status: StatusCodes.Status409Conflict,
                 detail: "Сотрудник не является тренером"));
         }
-        
+
+        var timeZoneId = string.IsNullOrWhiteSpace(request.Request.TimeZoneId)
+            ? clock.DefaultTimeZone.Id
+            : AppTimeZoneResolver.Resolve(request.Request.TimeZoneId).Id;
         
         var trainingSession = new DbTrainingSession
         {
             SportServiceId = request.Request.SportServiceId,
             ScheduleId = request.Request.ScheduleId,
-            StartedDate = request.Request.StartedDate,
-            EndedDate = request.Request.EndedDate,
+            TimeZoneId = timeZoneId,
+            StartedDate = request.Request.StartedDate.ToUniversalTime(),
+            EndedDate = request.Request.EndedDate.ToUniversalTime(),
             TrainerId = request.Request.TrainerId,
             Status = ESessionStatus.Planned
         };

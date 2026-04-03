@@ -1,10 +1,11 @@
-﻿using FluentValidation;
+using FluentValidation;
+using SportManagementSystem.BuildingBlocks.Time;
 
 namespace SportManagementSystem.Modules.Clients.Application.Commands.CreateMembership;
 
 public class CreateMembershipValidator : AbstractValidator<CreateMembershipMessage>
 {
-    public CreateMembershipValidator()
+    public CreateMembershipValidator(IAppClock clock)
     {
         RuleFor(x => x.Request.ClientId)
             .Must((message, clientId) => !IsManager(message) || clientId is > 0)
@@ -21,11 +22,12 @@ public class CreateMembershipValidator : AbstractValidator<CreateMembershipMessa
 
         RuleFor(x => x.Request.StartDate)
             .NotEmpty()
-            .Must(x => x > DateOnly.Parse(DateTime.UtcNow.ToString("yyyy-MM-dd")));
+            .Must(x => x.HasValue && x.Value > clock.TodayInDefaultTimeZone)
+            .When(x => !x.Request.MembershipTemplateId.HasValue);
         
         RuleFor(x => x.Request.EndDate)
             .NotEmpty()
-            .Must(x => x > DateOnly.Parse(DateTime.UtcNow.AddDays(1).ToString("yyyy-MM-dd")))
+            .Must(x => x.HasValue && x.Value > clock.TodayInDefaultTimeZone.AddDays(1))
             .When(x => !x.Request.MembershipTemplateId.HasValue);
         
         RuleFor(x => x.Request.RemainingVisits)

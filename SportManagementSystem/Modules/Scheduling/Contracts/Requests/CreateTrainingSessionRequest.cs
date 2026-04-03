@@ -1,4 +1,4 @@
-﻿namespace SportManagementSystem.Modules.Scheduling.Contracts.Requests;
+namespace SportManagementSystem.Modules.Scheduling.Contracts.Requests;
 
 public class CreateTrainingSessionRequest
 {
@@ -6,15 +6,17 @@ public class CreateTrainingSessionRequest
 
     public long? ScheduleId { get; set; }
 
+    public string? TimeZoneId { get; set; }
+
     /// <summary>
-    /// Дата и время начала занятия.
+    /// Дата и время начала занятия с часовым поясом или смещением.
     /// </summary>
-    public DateTime StartedDate { get; set; }
+    public DateTimeOffset StartedDate { get; set; }
     
     /// <summary>
-    /// Дата и время конца занятия.
+    /// Дата и время конца занятия с часовым поясом или смещением.
     /// </summary>
-    public DateTime EndedDate { get; set; }
+    public DateTimeOffset EndedDate { get; set; }
     
     public long TrainerId { get; set; }
 }
